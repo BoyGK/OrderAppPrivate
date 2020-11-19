@@ -24,3 +24,21 @@ fun ImageView.loadBlurImage(id: Int, radius: Int = 8, sampling: Int = 1) {
         .override(measuredWidth, measuredHeight)
         .into(this)
 }
+
+/**
+ * 加载模糊图片
+ */
+fun ImageView.loadImage(path: String) {
+    Glide.with(this).load(path)
+        .override(measuredWidth, measuredHeight)
+        .into(this)
+}
+
+/**
+ * 加载模糊图片
+ */
+fun ImageView.loadImage(id: Int) {
+    Glide.with(this).load(id)
+        .override(measuredWidth, measuredHeight)
+        .into(this)
+}

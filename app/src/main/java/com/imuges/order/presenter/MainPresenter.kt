@@ -1,6 +1,5 @@
 package com.imuges.order.presenter
 
-import com.imuges.order.R
 import com.imuges.order.activity.IMainView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.OrderSimpleInfo
@@ -25,24 +24,12 @@ class MainPresenter : BasePresenter<IMainView>() {
     }
 
     private fun initFakeData() {
-        mOrderData.add(
-            OrderSimpleInfo(0, "A", 1.0f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
-        mOrderData.add(
-            OrderSimpleInfo(1, "b", 1.2f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
-        mOrderData.add(
-            OrderSimpleInfo(2, "B", 1.9f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
-        mOrderData.add(
-            OrderSimpleInfo(3, "D", 1.56f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
-        mOrderData.add(
-            OrderSimpleInfo(4, "E", 1.1f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
-        mOrderData.add(
-            OrderSimpleInfo(5, "F", 1.066f, System.currentTimeMillis(), R.mipmap.ic_test)
-        )
+        for (i in 1..1000) {
+            val bg = (Math.random() * 10).toInt() % 3 + 1
+            mOrderData.add(
+                OrderSimpleInfo(i, "A${i}", i + 1.0f, System.currentTimeMillis(), bg)
+            )
+        }
         mOrderViewData.addAll(mOrderData)
         view?.updateList()
     }
@@ -51,5 +38,23 @@ class MainPresenter : BasePresenter<IMainView>() {
      * 获取页面数据
      */
     fun getViewData() = mOrderViewData
+
+    /**
+     * 搜索账单列表
+     */
+    fun searchOrder(name: String) {
+        if (name.isEmpty()) {
+            return
+        }
+        if (name == ":cancel") {
+            mOrderViewData.clear()
+            mOrderViewData.addAll(mOrderData)
+            view?.updateList()
+            return
+        }
+        mOrderViewData.clear()
+        mOrderViewData.addAll(mOrderData.filter { it.name.contains(name) })
+        view?.updateList()
+    }
 
 }

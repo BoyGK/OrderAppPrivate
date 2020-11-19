@@ -23,6 +23,11 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddOrderActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/SlideTheme" />
     </application>
 
 </manifest>

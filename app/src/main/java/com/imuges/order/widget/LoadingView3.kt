@@ -23,6 +23,7 @@ class LoadingView3 @JvmOverloads constructor(
 
     //方框大小
     private val mRectHalfWidth by lazy { width / 6f }
+
     /**
      * 矩形数组
      * 4 7 9
@@ -98,6 +99,16 @@ class LoadingView3 @JvmOverloads constructor(
     //执行标记
     private var mNext = true
 
+    //首次执行完回调
+    private var call: (() -> Unit)? = null
+
+    /**
+     * 设置执行回调，设置后，将不会继续进行动画效果
+     */
+    fun setAnimationFinishCallBack(c: (() -> Unit)) {
+        call = c
+    }
+
     init {
         mPaint.isAntiAlias = true
         mPaint.style = Paint.Style.FILL
@@ -130,6 +141,10 @@ class LoadingView3 @JvmOverloads constructor(
     private fun initAnimationListener() {
         //动画结束事件
         mAnimation5.addListener(onEnd = {
+            if (call != null) {
+                call!!()
+                return@addListener
+            }
             mNext = true
             invalidate()
         })

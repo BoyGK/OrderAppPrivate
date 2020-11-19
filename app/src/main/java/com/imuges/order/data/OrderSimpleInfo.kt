@@ -9,5 +9,5 @@ data class OrderSimpleInfo(
     val name: String,
     val percent: Float,
     val time: Long,
-    val backgroundResId: Int
+    val background: Int//背景图片的对应序号
 )

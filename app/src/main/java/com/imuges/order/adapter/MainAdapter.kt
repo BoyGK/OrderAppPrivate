@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.imuges.order.R
 import com.imuges.order.data.OrderSimpleInfo
 import com.imuges.order.expan.loadBlurImage
+import com.imuges.order.util.BackGroundTransform
 
 /**
  * @author BGQ
@@ -17,7 +18,7 @@ class MainAdapter(data: MutableList<OrderSimpleInfo>) :
 
     override fun convert(holder: BaseViewHolder, item: OrderSimpleInfo) {
         val imageBack = holder.getView<AppCompatImageView>(R.id.imageBackGround)
-        imageBack.loadBlurImage(item.backgroundResId, 15, 2)
+        imageBack.loadBlurImage(BackGroundTransform.transform(item.background), 16, 2)
         holder.setText(R.id.name, item.name)
         holder.setText(R.id.percent, "交易额：￥${item.percent}")
         holder.setText(R.id.time, TimeUtils.millis2String(item.time))

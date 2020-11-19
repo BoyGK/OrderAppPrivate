@@ -1,8 +1,6 @@
 package com.imuges.order.activity
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.os.Handler
 import com.imuges.order.R
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.base.BaseMVPActivity
@@ -19,14 +17,14 @@ class StartActivity : BaseFullTitleActivity() {
     }
 
     override fun onCreate() {
-        val color = Color.parseColor("#FF8282CF")
+        val color = getColor(R.color.mainTheme)
         setStateBarColor(color)
         backCard.mBackColor = color
 
-        Handler().postDelayed({
+        loadCard3.setAnimationFinishCallBack {
             MainActivity.startActivity(this)
             finish()
-        }, 1000L)
+        }
     }
 
 }

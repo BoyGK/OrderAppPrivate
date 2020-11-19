@@ -25,6 +25,7 @@ class LoadingView @JvmOverloads constructor(
 
     //方框大小
     private val mRectHalfWidth = 10f
+
     //移动的小方块(基于（0,0）和（宽,高）)
     private val mRectA by lazy {
         RectF(
@@ -94,6 +95,8 @@ class LoadingView @JvmOverloads constructor(
      * 绘制方块
      */
     private fun drawRect(canvas: Canvas) {
+        mPaint.color = mBackColor
+
         canvas.save()
         canvas.rotate(-mRotation, mRectA.centerX(), mRectA.centerY())
         canvas.drawRect(mRectA, mPaint)
