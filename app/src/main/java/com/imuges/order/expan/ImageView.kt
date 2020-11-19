@@ -3,6 +3,7 @@ package com.imuges.order.expan
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.imuges.order.R
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 /**
@@ -29,7 +30,7 @@ fun ImageView.loadBlurImage(id: Int, radius: Int = 8, sampling: Int = 1) {
  * 加载模糊图片
  */
 fun ImageView.loadImage(path: String) {
-    Glide.with(this).load(path)
+    Glide.with(this).load(path).placeholder(R.mipmap.ic_background_004)
         .override(measuredWidth, measuredHeight)
         .into(this)
 }
@@ -38,7 +39,7 @@ fun ImageView.loadImage(path: String) {
  * 加载模糊图片
  */
 fun ImageView.loadImage(id: Int) {
-    Glide.with(this).load(id)
+    Glide.with(this).load(id).placeholder(R.mipmap.ic_background_004)
         .override(measuredWidth, measuredHeight)
         .into(this)
 }

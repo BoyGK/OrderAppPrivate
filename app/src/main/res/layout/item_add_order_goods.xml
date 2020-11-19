@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textColor="#515151"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@id/picture"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="商品A" />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textColor="#515151"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintLeft_toRightOf="@id/picture"
         app:layout_constraintTop_toBottomOf="@id/name"
         tools:text="单价￥：1.5 / 双" />
@@ -45,7 +45,7 @@
         android:layout_margin="10dp"
         android:layout_marginStart="10dp"
         android:textColor="#515151"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="已选：20" />

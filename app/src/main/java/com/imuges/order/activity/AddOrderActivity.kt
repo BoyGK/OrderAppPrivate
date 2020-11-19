@@ -135,7 +135,7 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
      */
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val typeId = (adapter.data[position] as GoodsTypeInfo).goodsTypeId
-        presenter<AddOrderDefaultPresenter>(PRESENTER_ORDER_TYPE).position(typeId)
+        presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).position(typeId)
     }
 
     /**
