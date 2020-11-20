@@ -5,4 +5,7 @@
     <string name="history_order">历史账单</string>
     <string name="goods_list">商品列表</string>
     <string name="no_goods">暂无商品</string>
+    <string name="create_order">出单</string>
+    <string name="modify">修改</string>
+    <string name="orderlist">账单详情</string>
 </resources>

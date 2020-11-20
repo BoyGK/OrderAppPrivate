@@ -18,12 +18,16 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
         android:textColor="#515151"
         android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@id/picture"
+        app:layout_constraintRight_toLeftOf="@id/count"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="商品A" />
 
@@ -40,18 +44,20 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/count"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:textColor="#515151"
         android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@id/delete"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="已选：20" />
+        tools:text="已选：999" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/delete"
+        android:id="@+id/add"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="6dp"
@@ -63,7 +69,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/add"
+        android:id="@+id/delete"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="12dp"
@@ -72,7 +78,7 @@
         android:padding="4dp"
         android:src="@drawable/ic_full_delete_theme_color"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/delete" />
+        app:layout_constraintRight_toLeftOf="@id/add" />
 
     <View
         android:layout_width="match_parent"

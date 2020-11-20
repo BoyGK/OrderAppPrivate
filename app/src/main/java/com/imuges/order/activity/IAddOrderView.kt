@@ -2,6 +2,7 @@ package com.imuges.order.activity
 
 import com.imuges.order.base.IBaseView
 import com.imuges.order.data.GoodsOrderInfo
+import com.imuges.order.data.GoodsTypeInfo
 
 /**
  * @author BGQ
@@ -12,9 +13,16 @@ interface IAddOrderView : IBaseView {
 
     fun setCustomerName(name: String)
 
+    /**
+     * 经典语句
+     */
+    fun setOrderText(text: String)
+
     fun setGoodsToday(time: Long)
 
     fun updateTypeList()
+
+    fun updateTypeItem(position: Int, data: GoodsTypeInfo)
 
     fun updateGoodsList()
 
@@ -23,5 +31,7 @@ interface IAddOrderView : IBaseView {
     fun positionType(position: Int)
 
     fun positionGoods(position: Int)
+
+    fun setTotalPercent(percent: Float)
 
 }

@@ -16,12 +16,15 @@ import com.imuges.order.util.BackGroundTransform
 class MainAdapter(data: MutableList<OrderSimpleInfo>) :
     BaseQuickAdapter<OrderSimpleInfo, BaseViewHolder>(R.layout.item_main_order_list, data) {
 
+    init {
+        addChildClickViewIds(R.id.clickView)
+    }
+
     override fun convert(holder: BaseViewHolder, item: OrderSimpleInfo) {
         val imageBack = holder.getView<AppCompatImageView>(R.id.imageBackGround)
         imageBack.loadBlurImage(BackGroundTransform.transform(item.background), 16, 2)
         holder.setText(R.id.name, item.name)
         holder.setText(R.id.percent, "交易额：￥${item.percent}")
         holder.setText(R.id.time, TimeUtils.millis2String(item.time))
-        addChildClickViewIds(R.id.clickView)
     }
 }

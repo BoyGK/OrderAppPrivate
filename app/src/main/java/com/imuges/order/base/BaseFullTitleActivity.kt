@@ -28,6 +28,15 @@ abstract class BaseFullTitleActivity : BaseMVPActivity() {
     }
 
     /**
+     * 设置顶部栏文字颜色
+     * true -> 黑色文字
+     * false -> 白色文字
+     */
+    fun setStateBarLightModel(isLightModel: Boolean) {
+        BarUtils.setStatusBarLightMode(this, isLightModel)
+    }
+
+    /**
      * 设置间距
      */
     private fun topMargin() {

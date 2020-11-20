@@ -8,7 +8,9 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -22,14 +24,33 @@
                 android:minHeight="50dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/scrollBarBackGround"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.5"
-                    tools:src="@mipmap/ic_background_001" />
+                    app:layout_collapseParallaxMultiplier="0.5">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imageBackGround"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@mipmap/ic_background_001" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/orderText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="100dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="这是一段很长很长的化。这是一段很长很长的化。这是一段很长很长的化。这是一段很长很长的化。" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/titleBar"
@@ -112,11 +133,52 @@
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:layout_marginTop="250dp"
-        android:background="#EEEEEE"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_add_order_tab" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:cardElevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/totalPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:gravity="center_vertical"
+                android:textColor="#515151"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:text="总金额(￥)：1080元" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/createOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/shape_click_background"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="4dp"
+                android:text="@string/create_order"
+                android:textColor="@color/mainTheme"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

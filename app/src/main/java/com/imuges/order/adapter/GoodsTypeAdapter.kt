@@ -16,7 +16,7 @@ class GoodsTypeAdapter(data: MutableList<GoodsTypeInfo>) :
     override fun convert(holder: BaseViewHolder, item: GoodsTypeInfo) {
         holder.setText(R.id.tab, item.typeName)
         if (item.select) {
-            holder.setBackgroundColor(R.id.tab, Color.parseColor("#FFEEEEEE"))
+            holder.setBackgroundColor(R.id.tab, Color.parseColor("#FFB1B1FD"))
         } else {
             holder.setBackgroundColor(R.id.tab, Color.TRANSPARENT)
         }

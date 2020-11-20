@@ -86,7 +86,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     }
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        Toast.makeText(this, "child $position", Toast.LENGTH_SHORT).show()
+        OrderDetailActivity.startActivity(this)
     }
 
     override fun updateList() {

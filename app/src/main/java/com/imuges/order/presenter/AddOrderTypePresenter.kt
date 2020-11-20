@@ -28,14 +28,28 @@ class AddOrderTypePresenter : BasePresenter<IAddOrderView>() {
     fun getGoodsTypeData() = mGoodsTypeData
 
     /**
+     * 选中
+     */
+    fun select(position: Int) {
+        for (i in mGoodsTypeData.indices) {
+            if (mGoodsTypeData[i].select) {
+                view?.updateTypeItem(i, mGoodsTypeData[i])
+            }
+            mGoodsTypeData[i].select = false
+        }
+        mGoodsTypeData[position].select = true
+        view?.updateTypeItem(position, mGoodsTypeData[position])
+    }
+
+    /**
      * 定位
      */
     fun position(typeId: Int) {
         val position = mGoodsTypeData.indexOfFirst { it.goodsTypeId == typeId }
-        for (i in mGoodsTypeData.indices) {
-            mGoodsTypeData[i].select = false
+        if (mGoodsTypeData[position].select) {
+            return
         }
-        mGoodsTypeData[position].select = true
+        select(position)
         view?.positionType(position)
     }
 }

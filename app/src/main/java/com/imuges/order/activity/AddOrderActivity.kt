@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.BarUtils
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.TimeUtils
@@ -69,8 +71,8 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     }
 
     override fun onCreate() {
-        initTitleBar()
         bindSlide()
+        initTitleBar()
         initView()
         initListener()
     }
@@ -93,11 +95,14 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             tabRecyclerViewLp.topMargin =
                 ConvertUtils.dp2px(254f) + BarUtils.getStatusBarHeight() - offs
             tabRecyclerView.layoutParams = tabRecyclerViewLp
+            orderText.alpha =
+                1f - (offs / (ConvertUtils.dp2px(100f)).toFloat())
+            /*
             if (offs == 0) {
                 mSlideLock.unlock()
             } else {
                 mSlideLock.lock()
-            }
+            }*/
         })
     }
 
@@ -106,7 +111,9 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             .position(SlidrPosition.TOP)
             .build()
         mSlideLock = Slidr.attach(this, config)
-        mSlideLock.unlock()
+        //mSlideLock.unlock()
+        //暂时不允许下滑退出
+        mSlideLock.lock()
     }
 
     private fun initView() {
@@ -118,6 +125,24 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
         customerBack.setOnClickListener(this)
         mGoodsTypeAdapter.setOnItemClickListener(this)
         mGoodsOrderAdapter.setOnItemChildClickListener(this)
+        createOrder.setOnClickListener(this)
+        //监听货物列表滑动，主动定位type列表
+        var lastGoodsPosition = 0
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val viewPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (viewPosition == lastGoodsPosition) {
+                    return
+                }
+                val typeId =
+                    ((recyclerView.adapter as BaseQuickAdapter<*, *>).data[viewPosition] as GoodsOrderInfo).goodsTypeId
+                //type选中
+                presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).position(typeId)
+
+                lastGoodsPosition = viewPosition
+            }
+        })
     }
 
     override fun onClick(v: View) {
@@ -125,7 +150,8 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             customerBack -> {
                 onBackPressed()
             }
-            else -> {
+            createOrder -> {
+                defaultPresenter<AddOrderDefaultPresenter>().createOrder()
             }
         }
     }
@@ -135,22 +161,36 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
      */
     override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
         val typeId = (adapter.data[position] as GoodsTypeInfo).goodsTypeId
-        presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).position(typeId)
+        //货物定位
+        defaultPresenter<AddOrderDefaultPresenter>().position(typeId)
+        //type选中
+        presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).select(position)
     }
 
     /**
      * 仅goods列表点击调用
      */
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-
+        when (view.id) {
+            R.id.add -> {
+                defaultPresenter<AddOrderDefaultPresenter>().addGoods(position)
+            }
+            R.id.delete -> {
+                defaultPresenter<AddOrderDefaultPresenter>().deleteGoods(position)
+            }
+        }
     }
 
     override fun setBackGround(background: Int) {
-        scrollBarBackGround.loadBlurImage(BackGroundTransform.transform(background), 16, 2)
+        imageBackGround.loadBlurImage(BackGroundTransform.transform(background), 16, 2)
     }
 
     override fun setCustomerName(name: String) {
         customerName.text = name
+    }
+
+    override fun setOrderText(text: String) {
+        orderText.text = text
     }
 
     override fun setGoodsToday(time: Long) {
@@ -161,12 +201,16 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
         mGoodsTypeAdapter.notifyDataSetChanged()
     }
 
+    override fun updateTypeItem(position: Int, data: GoodsTypeInfo) {
+        mGoodsTypeAdapter.setData(position, data)
+    }
+
     override fun updateGoodsList() {
         mGoodsOrderAdapter.notifyDataSetChanged()
     }
 
     override fun updateGoodsItem(position: Int, data: GoodsOrderInfo) {
-        mGoodsOrderAdapter.setData(position, data)
+        mGoodsOrderAdapter.notifyItemChanged(position, data)
     }
 
     override fun positionType(position: Int) {
@@ -174,7 +218,14 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     }
 
     override fun positionGoods(position: Int) {
-        recyclerView.smoothScrollToPosition(position)
+        //recyclerView.scrollToPosition(position)
+        //定位的item滑动到顶部
+        (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(position, 0)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun setTotalPercent(percent: Float) {
+        totalPercent.text = "总金额(￥)：${percent}元"
     }
 
 }

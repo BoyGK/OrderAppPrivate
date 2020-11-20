@@ -19,4 +19,10 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="ADC" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#E7E7FB"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
