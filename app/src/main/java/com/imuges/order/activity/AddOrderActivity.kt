@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.imuges.order.R
+import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.adapter.GoodsOrderAdapter
 import com.imuges.order.adapter.GoodsTypeAdapter
 import com.imuges.order.base.BaseFullTitleActivity

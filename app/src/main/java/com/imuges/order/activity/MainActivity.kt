@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.View
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
 import androidx.core.view.isVisible
@@ -15,6 +14,7 @@ import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.imuges.order.R
+import com.imuges.order.activity.views.IMainView
 import com.imuges.order.adapter.MainAdapter
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.base.BasePresenter
@@ -61,6 +61,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     }
 
     private fun initListener() {
+        addGoods.setOnClickListener(this)
         addOrder.setOnClickListener(this)
         searchOrder.setOnClickListener(this)
         searchCancel.setOnClickListener(this)
@@ -72,6 +73,9 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
 
     override fun onClick(v: View) {
         when (v) {
+            addGoods -> {
+                AddGoodsActivity.startActivity(this)
+            }
             addOrder -> {
                 AddOrderActivity.startActivity(this)
             }

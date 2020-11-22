@@ -1,6 +1,6 @@
 package com.imuges.order.presenter
 
-import com.imuges.order.activity.IAddOrderView
+import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.GoodsOrderInfo
 

@@ -1,8 +1,9 @@
 package com.imuges.order.presenter
 
-import com.imuges.order.activity.IMainView
+import com.imuges.order.activity.views.IMainView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.OrderSimpleInfo
+import com.imuges.order.db.AppDatabaseManager
 
 /**
  * @author BGQ

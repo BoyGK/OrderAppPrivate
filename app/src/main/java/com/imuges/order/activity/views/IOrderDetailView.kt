@@ -1,4 +1,4 @@
-package com.imuges.order.activity
+package com.imuges.order.activity.views
 
 import com.imuges.order.base.IBaseView
 

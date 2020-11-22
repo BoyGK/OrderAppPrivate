@@ -8,4 +8,8 @@
     <string name="create_order">出单</string>
     <string name="modify">修改</string>
     <string name="orderlist">账单详情</string>
+    <string name="set_goods">配货信息</string>
+    <string name="goods_type">货物类型</string>
+    <string name="goods_lists">货物清单</string>
+    <string name="add_goods">添加货物</string>
 </resources>

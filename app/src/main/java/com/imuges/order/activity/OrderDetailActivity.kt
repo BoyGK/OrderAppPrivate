@@ -3,9 +3,10 @@ package com.imuges.order.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.view.View
+import com.blankj.utilcode.util.ConvertUtils
 import com.imuges.order.R
+import com.imuges.order.activity.views.IOrderDetailView
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.base.ContentView
@@ -32,9 +33,13 @@ class OrderDetailActivity : BaseFullTitleActivity(), View.OnClickListener, IOrde
     }
 
     override fun onCreate() {
-        setStateBarColor(Color.WHITE)
-        setStateBarLightModel(true)
+        initTitleBar()
         initListener()
+    }
+
+    override fun initTitleBar() {
+        setStateBarColor(getColor(R.color.mainTheme))
+        titleBarCard.mBolHeight = ConvertUtils.dp2px(20f).toFloat()
     }
 
     override fun setOrderContent(text: CharSequence) {
