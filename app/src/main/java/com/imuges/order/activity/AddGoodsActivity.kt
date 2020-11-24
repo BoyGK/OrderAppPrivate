@@ -87,6 +87,7 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
                 defaultPresenter<AddGoodsPresenter>().selectType(position)
             }
             is GoodsByAddAdapter -> {
+                defaultPresenter<AddGoodsPresenter>().addGoods(position)
             }
         }
     }
@@ -101,6 +102,14 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
 
     override fun updateGoodsList() {
         mGoodsAdapter.notifyDataSetChanged()
+    }
+
+    override fun showGoodsEditView(goodsCall: (goodsName: String, percent: Float, unit: String) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showTypeEditView(nameCall: (typeName: String) -> Unit) {
+        TODO("Not yet implemented")
     }
 
 }

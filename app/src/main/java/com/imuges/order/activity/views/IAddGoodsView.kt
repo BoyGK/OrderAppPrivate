@@ -13,4 +13,8 @@ interface IAddGoodsView : IBaseView {
 
     fun updateGoodsList()
 
+    fun showGoodsEditView(goodsCall: ((goodsName: String, percent: Float, unit: String) -> Unit))
+
+    fun showTypeEditView(nameCall: ((typeName: String) -> Unit))
+
 }

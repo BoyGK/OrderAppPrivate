@@ -59,6 +59,12 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
     fun getGoods() = mGoodsData
 
     fun selectType(position: Int) {
+        //最后一个是点击添加
+        if (position == mGoodsTypeData.size - 1) {
+            addGoodsType()
+            return
+        }
+        //选中
         for (i in mGoodsTypeData.indices) {
             if (mGoodsTypeData[i].select) {
                 mGoodsTypeData[i].select = false
@@ -70,4 +76,30 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
         mGoodsTypeData[position].select = true
         view?.updateTypeItem(position)
     }
+
+    fun addGoods(position: Int) {
+        if (position != 0) {
+            return
+        }
+        addGoods()
+    }
+
+    /**
+     * 添加货物类型
+     */
+    private fun addGoodsType() {
+        view?.showTypeEditView {
+
+        }
+    }
+
+    /**
+     * 添加货物
+     */
+    private fun addGoods() {
+        view?.showGoodsEditView { goodsName, percent, unit ->
+
+        }
+    }
+
 }
