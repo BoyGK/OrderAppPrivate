@@ -12,4 +12,5 @@
     <string name="goods_type">货物类型</string>
     <string name="goods_lists">货物清单</string>
     <string name="add_goods">添加货物</string>
+    <string name="input_goods_type">输入货物分类类型</string>
 </resources>

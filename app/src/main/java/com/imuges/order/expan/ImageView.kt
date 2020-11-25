@@ -7,6 +7,12 @@ import com.imuges.order.R
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 /**
+ * @author BGQ
+ * 图片加载扩展
+ */
+
+
+/**
  * 加载模糊图片
  */
 fun ImageView.loadBlurImage(path: String, radius: Int = 8, sampling: Int = 1) {
