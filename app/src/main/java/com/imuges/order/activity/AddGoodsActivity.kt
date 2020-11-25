@@ -4,14 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
-import androidx.core.widget.addTextChangedListener
-import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -24,9 +20,7 @@ import com.imuges.order.base.BasePresenter
 import com.imuges.order.base.ContentView
 import com.imuges.order.base.IBaseView
 import com.imuges.order.expan.layout
-import com.imuges.order.expan.marginBottom
 import com.imuges.order.expan.showBottomDialog
-import com.imuges.order.expan.showBottomView
 import com.imuges.order.presenter.AddGoodsPresenter
 import kotlinx.android.synthetic.main.activity_add_goods.*
 
@@ -87,6 +81,10 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
             }
             typeTitle -> {
                 typeRecycler.isVisible = !typeRecycler.isVisible
+                typeTitleArrow.setImageResource(
+                    if (typeRecycler.isVisible) R.drawable.ic_arrow_up_black
+                    else R.drawable.ic_arrow_down_black
+                )
             }
         }
     }
@@ -114,8 +112,22 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         mGoodsAdapter.notifyDataSetChanged()
     }
 
-    override fun showGoodsEditView(goodsCall: (goodsName: String, percent: Float, unit: String) -> Unit) {
-        TODO("Not yet implemented")
+    override fun showGoodsEditView(
+        goodsCall: (goodsName: String, percent: Float, unit: String, imagePath: String) -> Unit
+    ) {
+        val layout = layout(R.layout.dialog_add_goods, isCache = true)
+        val editName = layout.findViewById<AppCompatEditText>(R.id.goods_name_edit)
+        val editPercent = layout.findViewById<AppCompatEditText>(R.id.goods_percent_edit)
+        val editUnit = layout.findViewById<AppCompatEditText>(R.id.goods_unit_edit)
+        val image = layout.findViewById<AppCompatImageView>(R.id.goods_image)
+        val submit = layout.findViewById<AppCompatImageView>(R.id.goods_type_submit)
+        val dialog = showBottomDialog(layout, 0.5f)
+        image.setOnClickListener {
+
+        }
+        submit.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
     override fun showTypeEditView(nameCall: (typeName: String) -> Unit) {
