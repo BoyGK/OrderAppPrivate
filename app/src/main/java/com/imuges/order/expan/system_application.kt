@@ -4,7 +4,11 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
+import androidx.core.content.FileProvider
+import java.io.File
+import java.io.IOException
 
 
 /**
@@ -23,6 +27,8 @@ private const val INTENT_REQUEST_CODE_OPEN_CAMERA = KEY - 2
 
 //打开相机 录视频
 private const val INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO = KEY - 3
+
+private lateinit var currentPhotoPath: String
 
 private lateinit var mSelectImageCallUri: ((Uri: Uri) -> Unit)
 
@@ -74,15 +80,40 @@ fun Activity.selectImage(uriCall: (uri: Uri) -> Unit) {
     }
 }
 
+
 /**
  * 打开相机 拍照
  * @test
  */
 fun Activity.openCamera(uriCall: (uri: Uri) -> Unit) {
     mTakePhotoCallUri = uriCall
-    val intent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
-    if (intent.resolveActivity(packageManager) != null) {
-        startActivityForResult(intent, INTENT_REQUEST_CODE_OPEN_CAMERA)
+    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+        takePictureIntent.resolveActivity(packageManager)?.also {
+            val photoFile: File? = try {
+                createImageFile(this)
+            } catch (ex: IOException) {
+                return
+            }
+            photoFile?.also {
+                val photoURI: Uri =
+                    FileProvider.getUriForFile(this, "com.imuges.order.fileprovider", it)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, INTENT_REQUEST_CODE_OPEN_CAMERA)
+            }
+        }
+    }
+}
+
+@Throws(IOException::class)
+private fun createImageFile(activity: Activity): File {
+    val storageDir: File = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+    val file = File(storageDir, "tempImage.jpg")
+    return if (file.exists()) {
+        file.apply { currentPhotoPath = absolutePath }
+    } else {
+        File.createTempFile("tempImage", ".jpg", storageDir).apply {
+            currentPhotoPath = absolutePath
+        }
     }
 }
 

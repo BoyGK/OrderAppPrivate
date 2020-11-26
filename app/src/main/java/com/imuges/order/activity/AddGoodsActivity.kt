@@ -21,6 +21,7 @@ import com.imuges.order.base.BasePresenter
 import com.imuges.order.base.ContentView
 import com.imuges.order.base.IBaseView
 import com.imuges.order.expan.layout
+import com.imuges.order.expan.openCamera
 import com.imuges.order.expan.selectImage
 import com.imuges.order.expan.showBottomDialog
 import com.imuges.order.presenter.AddGoodsPresenter
@@ -126,7 +127,11 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         var path = ""
         val dialog = showBottomDialog(layout, 0.5f)
         image.setOnClickListener {
-            selectImage {
+//            selectImage {
+//                path = UriUtils.uri2File(it).absolutePath
+//                image.setImageURI(it)
+//            }
+            openCamera {
                 path = UriUtils.uri2File(it).absolutePath
                 image.setImageURI(it)
             }
