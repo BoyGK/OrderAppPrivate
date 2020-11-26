@@ -19,7 +19,7 @@ import com.imuges.order.R
 /**
  * 打开一个Pop Window
  */
-fun showPopView(popView: View, xOff: Int, yOff: Int): PopupWindow {
+fun View.showPopView(popView: View, xOff: Int, yOff: Int): PopupWindow {
     popView.isFocusable = true
     val popupWindow = PopupWindow(
         popView,
@@ -34,7 +34,7 @@ fun showPopView(popView: View, xOff: Int, yOff: Int): PopupWindow {
     popupWindow.isFocusable = false
 
     popView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-    popupWindow.showAsDropDown(popView, xOff, yOff)
+    popupWindow.showAsDropDown(this, xOff, yOff)
     return popupWindow
 }
 

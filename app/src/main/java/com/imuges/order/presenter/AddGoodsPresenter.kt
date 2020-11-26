@@ -97,7 +97,7 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
      * 添加货物
      */
     private fun addGoods() {
-        view?.showGoodsEditView { goodsName, percent, unit ->
+        view?.showGoodsEditView { goodsName, percent, unit, imagePath ->
 
         }
     }

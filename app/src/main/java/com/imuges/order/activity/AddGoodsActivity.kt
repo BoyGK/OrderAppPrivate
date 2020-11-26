@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
+import com.blankj.utilcode.util.UriUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -20,6 +21,7 @@ import com.imuges.order.base.BasePresenter
 import com.imuges.order.base.ContentView
 import com.imuges.order.base.IBaseView
 import com.imuges.order.expan.layout
+import com.imuges.order.expan.selectImage
 import com.imuges.order.expan.showBottomDialog
 import com.imuges.order.presenter.AddGoodsPresenter
 import kotlinx.android.synthetic.main.activity_add_goods.*
@@ -121,11 +123,27 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         val editUnit = layout.findViewById<AppCompatEditText>(R.id.goods_unit_edit)
         val image = layout.findViewById<AppCompatImageView>(R.id.goods_image)
         val submit = layout.findViewById<AppCompatImageView>(R.id.goods_type_submit)
+        var path = ""
         val dialog = showBottomDialog(layout, 0.5f)
         image.setOnClickListener {
-
+            selectImage {
+                path = UriUtils.uri2File(it).absolutePath
+                image.setImageURI(it)
+            }
         }
         submit.setOnClickListener {
+            if (editName.text.toString().isEmpty() ||
+                editPercent.text.toString().isEmpty() ||
+                editUnit.text.toString().isEmpty()
+            ) {
+                return@setOnClickListener
+            }
+            goodsCall(
+                editName.text.toString(),
+                editPercent.text.toString().toFloat(),
+                editUnit.text.toString(),
+                path
+            )
             dialog.dismiss()
         }
     }
