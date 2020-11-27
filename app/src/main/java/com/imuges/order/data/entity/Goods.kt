@@ -12,7 +12,7 @@ data class Goods(
     /**
      * 货物id
      */
-    @PrimaryKey val goodsId: Int,
+    @PrimaryKey(autoGenerate = true) val goodsId: Int? = null,
     /**
      * 货物名称
      */

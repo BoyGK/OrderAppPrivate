@@ -12,7 +12,7 @@ data class Order(
     /**
      * 订单id
      */
-    @PrimaryKey val orderId: Int,
+    @PrimaryKey(autoGenerate = true) val orderId: Int? = null,
     /**
      * 订单对应商家名称
      */

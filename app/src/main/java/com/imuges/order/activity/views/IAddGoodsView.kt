@@ -7,6 +7,8 @@ import com.imuges.order.base.IBaseView
  */
 interface IAddGoodsView : IBaseView {
 
+    fun updateCurrentType(type: String)
+
     fun updateTypeList()
 
     fun updateTypeItem(position: Int)

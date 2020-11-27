@@ -9,7 +9,7 @@ import java.lang.RuntimeException
  * @author BGQ
  * MVP基类
  */
-abstract class BaseMVPActivity : BaseActivity(), IBaseView {
+abstract class BaseMVPActivity : BasePermissionActivity(), IBaseView {
 
     companion object {
         const val DEFAULT = "presenter_default"
@@ -18,7 +18,7 @@ abstract class BaseMVPActivity : BaseActivity(), IBaseView {
     /**
      * 活动绑定的presenter
      */
-    lateinit var presenters: Map<String, BasePresenter<out IBaseView>>
+    private lateinit var presenters: Map<String, BasePresenter<out IBaseView>>
 
     /**
      * 只有一个presenter时有用

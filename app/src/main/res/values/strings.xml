@@ -16,4 +16,5 @@
     <string name="input_goods_name">输入货物名称</string>
     <string name="input_goods_percent">输入货物单价</string>
     <string name="input_goods_unit">输入货物单价单位</string>
+    <string name="no_permission">权限不足</string>
 </resources>

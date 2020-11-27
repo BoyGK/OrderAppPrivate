@@ -12,7 +12,7 @@ data class Type(
     /**
      * 类型id
      */
-    @PrimaryKey val typeId: Int,
+    @PrimaryKey(autoGenerate = true) val typeId: Int? = null,
     /**
      * 类型名称
      */

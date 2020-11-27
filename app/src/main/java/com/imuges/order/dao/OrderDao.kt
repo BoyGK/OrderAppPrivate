@@ -1,10 +1,24 @@
 package com.imuges.order.dao
 
-import androidx.room.Dao
+import androidx.room.*
+import com.imuges.order.data.entity.Order
 
 /**
  * @author BGQ
  */
 @Dao
 interface OrderDao {
+
+    @Query("select * from goods")
+    fun queryAll(): MutableList<Order>
+
+    @Insert
+    fun insert(order: Order)
+
+    @Delete
+    fun delete(order: Order)
+
+    @Update
+    fun update(order: Order)
+
 }

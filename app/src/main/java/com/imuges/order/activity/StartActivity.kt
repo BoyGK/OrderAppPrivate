@@ -22,8 +22,12 @@ class StartActivity : BaseFullTitleActivity() {
         backCard.mBackColor = color
 
         loadCard3.setAnimationFinishCallBack {
-            MainActivity.startActivity(this)
-            finish()
+            permissionStorage(onSuccess = {
+                MainActivity.startActivity(this)
+                finish()
+            }, onRefuse = {
+                finish()
+            })
         }
     }
 

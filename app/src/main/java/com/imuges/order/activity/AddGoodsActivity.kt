@@ -3,11 +3,13 @@ package com.imuges.order.activity
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
+import com.blankj.utilcode.constant.PermissionConstants
 import com.blankj.utilcode.util.UriUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
@@ -20,10 +22,7 @@ import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.base.ContentView
 import com.imuges.order.base.IBaseView
-import com.imuges.order.expan.layout
-import com.imuges.order.expan.openCamera
-import com.imuges.order.expan.selectImage
-import com.imuges.order.expan.showBottomDialog
+import com.imuges.order.expan.*
 import com.imuges.order.presenter.AddGoodsPresenter
 import kotlinx.android.synthetic.main.activity_add_goods.*
 
@@ -103,6 +102,11 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    override fun updateCurrentType(type: String) {
+        goodsTitle.text = "${getString(R.string.goods_lists)}(${type})"
+    }
+
     override fun updateTypeList() {
         mGoodsTypeAdapter.notifyDataSetChanged()
     }
@@ -127,14 +131,22 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         var path = ""
         val dialog = showBottomDialog(layout, 0.5f)
         image.setOnClickListener {
-//            selectImage {
-//                path = UriUtils.uri2File(it).absolutePath
-//                image.setImageURI(it)
-//            }
-            openCamera {
-                path = UriUtils.uri2File(it).absolutePath
-                image.setImageURI(it)
-            }
+            permission(
+                permissions = arrayOf(
+                    PermissionConstants.CAMERA,
+                    PermissionConstants.STORAGE
+                ), onSuccess = {
+                    openCamera {
+                        path = UriUtils.uri2File(it).absolutePath
+                        val options = BitmapFactory.Options()
+                        options.inSampleSize = 5
+                        val bitmap = BitmapFactory.decodeFile(path, options)
+                        image.setImageBitmap(bitmap)
+                    }
+                }, onRefuse = {
+                    toast(getString(R.string.no_permission))
+                })
+
         }
         submit.setOnClickListener {
             if (editName.text.toString().isEmpty() ||

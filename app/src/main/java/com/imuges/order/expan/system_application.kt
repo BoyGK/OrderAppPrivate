@@ -28,36 +28,52 @@ private const val INTENT_REQUEST_CODE_OPEN_CAMERA = KEY - 2
 //打开相机 录视频
 private const val INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO = KEY - 3
 
-private lateinit var currentPhotoPath: String
+//拍照的临时图片路径
+private lateinit var mTempPhotoPath: String
 
+//拍照的临时Uri路径
+private lateinit var mTempPhotoUri: Uri
+
+//图片选择返回
 private lateinit var mSelectImageCallUri: ((Uri: Uri) -> Unit)
 
+//拍照返回
 private lateinit var mTakePhotoCallUri: ((Uri: Uri) -> Unit)
 
+//录视频返回
 private lateinit var mRecordingCallUri: ((Uri: Uri) -> Unit)
 
 /**
  * 该方法一定要在BaseActivity中调用，不然该扩展内的所有方法都没有效果
  */
-fun activityResult(requestCode: Int, resultCode: Int, data: Intent) {
+fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     if (resultCode != RESULT_OK) {
-        return
-    }
-    if (data.data == null) {
         return
     }
     when (requestCode) {
         INTENT_REQUEST_CODE_OPEN_GALLERY -> {
+            if (data == null) {
+                return
+            }
+            if (data.data == null) {
+                return
+            }
             if (::mSelectImageCallUri.isInitialized) {
                 mSelectImageCallUri(data.data!!)
             }
         }
         INTENT_REQUEST_CODE_OPEN_CAMERA -> {
             if (::mTakePhotoCallUri.isInitialized) {
-                mTakePhotoCallUri(data.data!!)
+                mTakePhotoCallUri(mTempPhotoUri)
             }
         }
         INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO -> {
+            if (data == null) {
+                return
+            }
+            if (data.data == null) {
+                return
+            }
             if (::mRecordingCallUri.isInitialized) {
                 mRecordingCallUri(data.data!!)
             }
@@ -72,18 +88,18 @@ fun activityResult(requestCode: Int, resultCode: Int, data: Intent) {
  */
 fun Activity.selectImage(uriCall: (uri: Uri) -> Unit) {
     mSelectImageCallUri = uriCall
-    val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+    Intent(Intent.ACTION_GET_CONTENT).apply {
         type = "image/*"
-    }
-    if (intent.resolveActivity(packageManager) != null) {
-        startActivityForResult(intent, INTENT_REQUEST_CODE_OPEN_GALLERY)
+    }.also { selectImageIntent ->
+        selectImageIntent.resolveActivity(packageManager)?.also {
+            startActivityForResult(selectImageIntent, INTENT_REQUEST_CODE_OPEN_GALLERY)
+        }
     }
 }
 
 
 /**
  * 打开相机 拍照
- * @test
  */
 fun Activity.openCamera(uriCall: (uri: Uri) -> Unit) {
     mTakePhotoCallUri = uriCall
@@ -95,9 +111,8 @@ fun Activity.openCamera(uriCall: (uri: Uri) -> Unit) {
                 return
             }
             photoFile?.also {
-                val photoURI: Uri =
-                    FileProvider.getUriForFile(this, "com.imuges.order.fileprovider", it)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                mTempPhotoUri = FileProvider.getUriForFile(this, "${packageName}.fileprovider", it)
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTempPhotoUri)
                 startActivityForResult(takePictureIntent, INTENT_REQUEST_CODE_OPEN_CAMERA)
             }
         }
@@ -109,10 +124,11 @@ private fun createImageFile(activity: Activity): File {
     val storageDir: File = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
     val file = File(storageDir, "tempImage.jpg")
     return if (file.exists()) {
-        file.apply { currentPhotoPath = absolutePath }
+        file.apply { mTempPhotoPath = absolutePath }
     } else {
-        File.createTempFile("tempImage", ".jpg", storageDir).apply {
-            currentPhotoPath = absolutePath
+        file.apply {
+            createNewFile()
+            mTempPhotoPath = absolutePath
         }
     }
 }
@@ -123,8 +139,9 @@ private fun createImageFile(activity: Activity): File {
  */
 fun Activity.openCameraForVideo(uriCall: (uri: Uri) -> Unit) {
     mRecordingCallUri = uriCall
-    val intent = Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA)
-    if (intent.resolveActivity(packageManager) != null) {
-        startActivityForResult(intent, INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO)
+    Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+        takeVideoIntent.resolveActivity(packageManager)?.also {
+            startActivityForResult(takeVideoIntent, INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO)
+        }
     }
 }

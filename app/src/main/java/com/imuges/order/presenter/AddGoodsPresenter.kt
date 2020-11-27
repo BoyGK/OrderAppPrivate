@@ -19,7 +19,7 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
 
     private fun initFakeData() {
         for (i in 0..10) {
-            mGoodsTypeData.add(GoodsTypeInfo(i, "Type-${i}", i == 3))
+            mGoodsTypeData.add(GoodsTypeInfo(i, "Type-${i}", i == 0))
         }
         mGoodsTypeData.add(GoodsTypeInfo(0, "添加", false))
 
@@ -50,6 +50,7 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
                 )
             }
         }
+        view?.updateCurrentType("Type-0")
         view?.updateTypeList()
         view?.updateGoodsList()
     }
@@ -75,6 +76,7 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
         }
         mGoodsTypeData[position].select = true
         view?.updateTypeItem(position)
+        view?.updateCurrentType(mGoodsTypeData[position].typeName)
     }
 
     fun addGoods(position: Int) {
