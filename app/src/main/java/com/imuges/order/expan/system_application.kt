@@ -105,12 +105,12 @@ fun Activity.openCamera(uriCall: (uri: Uri) -> Unit) {
     mTakePhotoCallUri = uriCall
     Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
         takePictureIntent.resolveActivity(packageManager)?.also {
-            val photoFile: File? = try {
+            val photoFile: File = try {
                 createImageFile(this)
             } catch (ex: IOException) {
                 return
             }
-            photoFile?.also {
+            photoFile.also {
                 mTempPhotoUri = FileProvider.getUriForFile(this, "${packageName}.fileprovider", it)
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mTempPhotoUri)
                 startActivityForResult(takePictureIntent, INTENT_REQUEST_CODE_OPEN_CAMERA)

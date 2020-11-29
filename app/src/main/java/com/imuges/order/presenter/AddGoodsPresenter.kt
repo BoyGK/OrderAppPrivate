@@ -4,60 +4,77 @@ import com.imuges.order.activity.views.IAddGoodsView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.GoodsSimpleInfo
 import com.imuges.order.data.GoodsTypeInfo
+import com.imuges.order.model.AddGoodsModel
+import com.imuges.order.util.PicturePathTransform
 
 /**
  * Created by "BGQ" on 2020/11/21.
  */
 class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
 
+    private val mAddGoodsModel by lazy { AddGoodsModel() }
+
     private val mGoodsTypeData by lazy { mutableListOf<GoodsTypeInfo>() }
     private val mGoodsData by lazy { mutableListOf<GoodsSimpleInfo>() }
+    private val mGoodsCurrentTypeData by lazy { mutableListOf<GoodsSimpleInfo>() }
+    private val mDefaultGoodsAddTypeId = -1
+
+    private var mCurrentTypeId: Int = -1
 
     override fun onViewCreate() {
-        initFakeData()
+        initTypeData()
     }
 
-    private fun initFakeData() {
-        for (i in 0..10) {
-            mGoodsTypeData.add(GoodsTypeInfo(i, "Type-${i}", i == 0))
-        }
-        mGoodsTypeData.add(GoodsTypeInfo(0, "添加", false))
-
-        for (i in 0..10) {
-            if (i == 0) {
-                mGoodsData.add(
-                    GoodsSimpleInfo(
-                        0,
-                        0,
-                        "",
-                        0f,
-                        "",
-                        "",
-                        GoodsSimpleInfo.ADD
-                    )
-                )
-            } else {
-                mGoodsData.add(
-                    GoodsSimpleInfo(
-                        i,
-                        i,
-                        "Goods-${i}",
-                        1.1f * i,
-                        "只",
-                        "",
-                        GoodsSimpleInfo.NORMAL
-                    )
-                )
+    private fun initTypeData() {
+        mAddGoodsModel.loadTypes {
+            mGoodsTypeData.addAll(it)
+            if (mGoodsTypeData.isNotEmpty()) {
+                mCurrentTypeId = mGoodsTypeData[0].goodsTypeId
+                mGoodsTypeData[0].select = true
+                view?.updateCurrentType(mGoodsTypeData[0].typeName)
             }
+            mGoodsTypeData.add(GoodsTypeInfo(0, "添加", false))
+            view?.updateTypeList()
+
+            //优先初始化类型，获取mCurrentTypeId
+            initGoodsData()
         }
-        view?.updateCurrentType("Type-0")
-        view?.updateTypeList()
-        view?.updateGoodsList()
+    }
+
+    private fun initGoodsData() {
+        mAddGoodsModel.loadGoods {
+            mGoodsData.addAll(it)
+            mGoodsData.add(
+                0,
+                GoodsSimpleInfo(
+                    0,
+                    mDefaultGoodsAddTypeId,
+                    "添加货物",
+                    0f,
+                    "",
+                    "",
+                    itemType = GoodsSimpleInfo.ADD
+                )
+            )
+            getGoods()
+            view?.updateGoodsList()
+        }
     }
 
     fun getGoodsType() = mGoodsTypeData
 
-    fun getGoods() = mGoodsData
+    fun getGoods(): MutableList<GoodsSimpleInfo> {
+        if (mGoodsData.isEmpty()) {
+            return mGoodsCurrentTypeData
+        }
+        mGoodsCurrentTypeData.clear()
+        mGoodsCurrentTypeData.addAll(
+            mGoodsData.filter {
+                it.typeId == mDefaultGoodsAddTypeId || it.typeId == mCurrentTypeId
+            }
+        )
+        return mGoodsCurrentTypeData
+    }
 
     fun selectType(position: Int) {
         //最后一个是点击添加
@@ -74,13 +91,20 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
             }
             mGoodsTypeData[i].select = false
         }
+        mCurrentTypeId = mGoodsTypeData[position].goodsTypeId
         mGoodsTypeData[position].select = true
         view?.updateTypeItem(position)
         view?.updateCurrentType(mGoodsTypeData[position].typeName)
+
+        getGoods()
+        view?.updateGoodsList()
     }
 
     fun addGoods(position: Int) {
         if (position != 0) {
+            return
+        }
+        if (mCurrentTypeId == -1) {
             return
         }
         addGoods()
@@ -90,8 +114,12 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
      * 添加货物类型
      */
     private fun addGoodsType() {
-        view?.showTypeEditView {
-
+        view?.showTypeEditView { typeName ->
+            mAddGoodsModel.addTypes(typeName) {
+                val insertPosition = mGoodsTypeData.size - 1
+                mGoodsTypeData.add(insertPosition, it)
+                view?.updateTypeInsert(insertPosition)
+            }
         }
     }
 
@@ -100,7 +128,20 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
      */
     private fun addGoods() {
         view?.showGoodsEditView { goodsName, percent, unit, imagePath ->
-
+            mAddGoodsModel.addGoods(
+                GoodsSimpleInfo(
+                    0,
+                    mCurrentTypeId,
+                    goodsName,
+                    percent,
+                    unit,
+                    PicturePathTransform.transform(imagePath)
+                )
+            ) {
+                mGoodsData.add(it)
+                mGoodsCurrentTypeData.add(it)
+                view?.updateGoodsInsert(mGoodsTypeData.size)
+            }
         }
     }
 

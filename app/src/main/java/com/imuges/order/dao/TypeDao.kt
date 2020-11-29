@@ -12,6 +12,9 @@ interface TypeDao {
     @Query("select * from type")
     fun queryAll(): MutableList<Type>
 
+    @Query("select * from type where typeName = :name")
+    fun queryByName(name: String): Type
+
     @Insert
     fun insert(type: Type)
 

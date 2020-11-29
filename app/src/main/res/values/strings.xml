@@ -9,6 +9,7 @@
     <string name="modify">修改</string>
     <string name="orderlist">账单详情</string>
     <string name="set_goods">配货信息</string>
+    <string name="excel_import">Excel导入</string>
     <string name="goods_type">货物类型(点击切换展开与收缩)</string>
     <string name="goods_lists">货物清单</string>
     <string name="add_goods">添加货物</string>

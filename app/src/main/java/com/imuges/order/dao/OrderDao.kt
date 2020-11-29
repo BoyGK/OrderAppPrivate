@@ -9,7 +9,7 @@ import com.imuges.order.data.entity.Order
 @Dao
 interface OrderDao {
 
-    @Query("select * from goods")
+    @Query("select * from `order`")
     fun queryAll(): MutableList<Order>
 
     @Insert

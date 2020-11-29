@@ -111,12 +111,20 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         mGoodsTypeAdapter.notifyDataSetChanged()
     }
 
+    override fun updateTypeInsert(position: Int) {
+        mGoodsTypeAdapter.notifyItemInserted(position)
+    }
+
     override fun updateTypeItem(position: Int) {
         mGoodsTypeAdapter.notifyItemChanged(position)
     }
 
     override fun updateGoodsList() {
         mGoodsAdapter.notifyDataSetChanged()
+    }
+
+    override fun updateGoodsInsert(position: Int) {
+        mGoodsAdapter.notifyItemInserted(position)
     }
 
     override fun showGoodsEditView(
@@ -161,6 +169,10 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
                 editUnit.text.toString(),
                 path
             )
+            editName.setText("")
+            editPercent.setText("")
+            editUnit.setText("")
+            image.setImageResource(R.drawable.ic_add_white)
             dialog.dismiss()
         }
     }
@@ -175,6 +187,7 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
                 return@setOnClickListener
             }
             nameCall(edit.text.toString())
+            edit.setText("")
             dialog.dismiss()
         }
     }

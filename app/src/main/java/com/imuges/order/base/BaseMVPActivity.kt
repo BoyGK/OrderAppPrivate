@@ -1,8 +1,6 @@
 package com.imuges.order.base
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import java.lang.RuntimeException
 
 
 /**
@@ -51,11 +49,13 @@ abstract class BaseMVPActivity : BasePermissionActivity(), IBaseView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenters = getPresenterMap()
-        for (presenter in presenters) {
-            presenter.value.attachView(this)
-            presenter.value.onViewCreate()
+        for ((_, value) in presenters) {
+            value.attachView(this)
         }
         onCreate()
+        for ((_, value) in presenters) {
+            value.onViewCreate()
+        }
     }
 
     override fun onStart() {
