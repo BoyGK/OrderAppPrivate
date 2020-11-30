@@ -1,5 +1,7 @@
 package com.imuges.order.expan
 
+import android.content.res.Resources
+import android.util.TypedValue
 import com.blankj.utilcode.util.ConvertUtils
 
 /**
@@ -23,3 +25,23 @@ fun Int.sp2px() = ConvertUtils.sp2px(toFloat())
 fun Int.px2sp() = ConvertUtils.px2sp(toFloat())
 
 fun Int.px2dp() = ConvertUtils.px2dp(toFloat())
+
+/**
+ * 默认当dp
+ */
+val Float.px: Float
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this,
+        Resources.getSystem().displayMetrics
+    )
+
+/**
+ * 默认当dp
+ */
+val Int.px: Float
+    get() = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        Resources.getSystem().displayMetrics
+    )

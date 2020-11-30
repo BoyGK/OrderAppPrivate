@@ -1,5 +1,6 @@
 package com.imuges.order.expan
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
@@ -42,8 +43,8 @@ fun View.showPopView(popView: View, xOff: Int, yOff: Int): PopupWindow {
 /**
  * 居中弹出ialog
  */
-fun showCenterDialog(view: View): Dialog {
-    val dialog = Dialog(view.context, R.style.translucent_dialog)
+fun Activity.showCenterDialog(view: View): Dialog {
+    val dialog = Dialog(this, R.style.translucent_dialog)
     dialog.setCancelable(true)
     dialog.setContentView(view)
     val window = dialog.window!!
@@ -61,8 +62,8 @@ fun showCenterDialog(view: View): Dialog {
 /**
  * 底部界面Dialog
  */
-fun showBottomDialog(view: View, dimAmount: Float = 0f): Dialog {
-    val dialog = Dialog(view.context, R.style.translucent_dialog)
+fun Activity.showBottomDialog(view: View, dimAmount: Float = 0f): Dialog {
+    val dialog = Dialog(this, R.style.translucent_dialog)
     dialog.setCancelable(true)
     dialog.setContentView(view)
     val window = dialog.window!!
@@ -83,8 +84,8 @@ fun showBottomDialog(view: View, dimAmount: Float = 0f): Dialog {
 /**
  * 底部界面弹出
  */
-fun showBottomView(view: View): WindowManager {
-    val windowManager = view.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+fun Activity.showBottomView(view: View): WindowManager {
+    val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
     val layoutParams = WindowManager.LayoutParams()
     layoutParams.gravity = Gravity.BOTTOM
     layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT

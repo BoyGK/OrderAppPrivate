@@ -60,44 +60,44 @@ abstract class BaseMVPActivity : BasePermissionActivity(), IBaseView {
 
     override fun onStart() {
         super.onStart()
-        for (presenter in presenters) {
-            presenter.value.onViewStart()
+        for ((_, value) in presenters) {
+            value.onViewStart()
         }
     }
 
     override fun onRestart() {
         super.onRestart()
-        for (presenter in presenters) {
-            presenter.value.onViewReStart()
+        for ((_, value) in presenters) {
+            value.onViewReStart()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        for (presenter in presenters) {
-            presenter.value.onViewResume()
+        for ((_, value) in presenters) {
+            value.onViewResume()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        for (presenter in presenters) {
-            presenter.value.onViewPause()
+        for ((_, value) in presenters) {
+            value.onViewPause()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        for (presenter in presenters) {
-            presenter.value.onViewStop()
+        for ((_, value) in presenters) {
+            value.onViewStop()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        for (presenter in presenters) {
-            presenter.value.onViewDestroy()
-            presenter.value.detachView()
+        for ((_, value) in presenters) {
+            value.onViewDestroy()
+            value.detachView()
         }
     }
 }
