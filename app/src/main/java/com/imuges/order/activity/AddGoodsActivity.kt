@@ -192,4 +192,9 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        releaseCacheView()
+    }
+
 }

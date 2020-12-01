@@ -130,6 +130,15 @@ fun Context.layout(@LayoutRes id: Int, parent: ViewGroup? = null, isCache: Boole
     }
 }
 
+/**
+ * 缓存view持有context对象，容易造成内存泄漏
+ * 除非大量创建相同的临时view，否则尽量不要使用
+ */
+fun Context.releaseCacheView() {
+    val localThread = Thread.currentThread()
+    mViewCache.remove(localThread)
+}
+
 
 /**
  * 创建的View的缓存
