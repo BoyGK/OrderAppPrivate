@@ -4,8 +4,15 @@ import com.imuges.order.activity.views.IAddGoodsView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.GoodsSimpleInfo
 import com.imuges.order.data.GoodsTypeInfo
+import com.imuges.order.excel.Excel
+import com.imuges.order.excel.ExcelReader
 import com.imuges.order.model.AddGoodsModel
 import com.imuges.order.util.PicturePathTransform
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Thread.sleep
 
 /**
  * Created by "BGQ" on 2020/11/21.
@@ -143,6 +150,31 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
                 view?.updateGoodsInsert(mGoodsTypeData.size)
             }
         }
+    }
+
+    /**
+     * 导入Excel数据
+     * 暂时不支持直接再Excel中配置图片，后续添加
+     */
+    fun importExcel() {
+        view?.selectFile { fileName, fd ->
+            val isXlsx = fileName.endsWith(".xlsx")
+            val er = ExcelReader()
+            er.setXlsx(isXlsx)
+            val excel = er.parse(fd)
+            view?.showWaitProgress()
+            GlobalScope.launch(Dispatchers.Main) {
+                splitExcelData(excel)
+                view?.hideWaitProgress()
+            }
+        }
+    }
+
+    /**
+     * 将Excel数据插入数据库
+     */
+    private suspend fun splitExcelData(excel: Excel) = withContext(Dispatchers.IO) {
+
     }
 
 }

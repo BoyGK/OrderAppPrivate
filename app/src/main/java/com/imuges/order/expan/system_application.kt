@@ -3,11 +3,15 @@ package com.imuges.order.expan
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
+import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
 import java.io.File
+import java.io.FileDescriptor
 import java.io.IOException
 
 
@@ -28,6 +32,9 @@ private const val INTENT_REQUEST_CODE_OPEN_CAMERA = KEY - 2
 //打开相机 录视频
 private const val INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO = KEY - 3
 
+//打开文件选择
+private const val INTENT_REQUEST_CODE_OPEN_FILE = KEY - 4
+
 //拍照的临时图片路径
 private lateinit var mTempPhotoPath: String
 
@@ -43,10 +50,13 @@ private lateinit var mTakePhotoCallUri: ((Uri: Uri) -> Unit)
 //录视频返回
 private lateinit var mRecordingCallUri: ((Uri: Uri) -> Unit)
 
+//选择文件返回
+private lateinit var mSelectFileCall: (name: String, fd: FileDescriptor) -> Unit
+
 /**
  * 该方法一定要在BaseActivity中调用，不然该扩展内的所有方法都没有效果
  */
-fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+fun Activity.activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     if (resultCode != RESULT_OK) {
         return
     }
@@ -77,6 +87,31 @@ fun activityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             if (::mRecordingCallUri.isInitialized) {
                 mRecordingCallUri(data.data!!)
             }
+        }
+        INTENT_REQUEST_CODE_OPEN_FILE -> {
+            if (data == null) {
+                return
+            }
+            if (data.data == null) {
+                return
+            }
+            var fileName: String? = null
+            val fileDescriptor: FileDescriptor?
+            val contentResolver = applicationContext.contentResolver
+            val cursor: Cursor? = contentResolver.query(
+                data.data!!, null, null, null, null, null
+            )
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    fileName = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+            }
+            val parcelFileDescriptor = contentResolver.openFileDescriptor(data.data!!, "r")
+            fileDescriptor = parcelFileDescriptor?.fileDescriptor
+            if (fileName == null || fileDescriptor == null) {
+                return
+            }
+            mSelectFileCall(fileName!!, fileDescriptor)
         }
         else -> {
         }
@@ -135,13 +170,31 @@ private fun createImageFile(activity: Activity): File {
 
 /**
  * 打开相机 录视频
- * @test
  */
 fun Activity.openCameraForVideo(uriCall: (uri: Uri) -> Unit) {
     mRecordingCallUri = uriCall
     Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
         takeVideoIntent.resolveActivity(packageManager)?.also {
             startActivityForResult(takeVideoIntent, INTENT_REQUEST_CODE_OPEN_CAMERA_VIDEO)
+        }
+    }
+}
+
+/**
+ * 选择文件
+ */
+fun Activity.openFile(
+    mimeTypes: Array<String> = arrayOf("*/*"),
+    fileCall: (name: String, fd: FileDescriptor) -> Unit
+) {
+    mSelectFileCall = fileCall
+    Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+        addCategory(Intent.CATEGORY_OPENABLE)
+        type = "*/*"
+        putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+    }.also { selectFileIntent ->
+        selectFileIntent.resolveActivity(packageManager)?.also {
+            startActivityForResult(selectFileIntent, INTENT_REQUEST_CODE_OPEN_FILE)
         }
     }
 }

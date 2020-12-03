@@ -25,6 +25,7 @@ import com.imuges.order.base.IBaseView
 import com.imuges.order.expan.*
 import com.imuges.order.presenter.AddGoodsPresenter
 import kotlinx.android.synthetic.main.activity_add_goods.*
+import java.io.FileDescriptor
 
 /**
  * @author BGQ
@@ -72,6 +73,7 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
     private fun initListener() {
         backCard.setOnClickListener(this)
         typeTitle.setOnClickListener(this)
+        importExcel.setOnClickListener(this)
         mGoodsTypeAdapter.setOnItemClickListener(this)
         mGoodsAdapter.setOnItemClickListener(this)
     }
@@ -87,6 +89,9 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
                     if (typeRecycler.isVisible) R.drawable.ic_arrow_up_black
                     else R.drawable.ic_arrow_down_black
                 )
+            }
+            importExcel -> {
+                defaultPresenter<AddGoodsPresenter>().importExcel()
             }
         }
     }
@@ -125,6 +130,17 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
 
     override fun updateGoodsInsert(position: Int) {
         mGoodsAdapter.notifyItemInserted(position)
+    }
+
+    override fun selectFile(fileCall: (name: String, fd: FileDescriptor) -> Unit) {
+        openFile(
+            mimeTypes = arrayOf(
+                MIME_MapTable[".xls"] ?: error(".xls is not config"),
+                MIME_MapTable[".xlsx"] ?: error(".xlsx is not config")
+            )
+        ) { name, fd ->
+            fileCall(name, fd)
+        }
     }
 
     override fun showGoodsEditView(
@@ -190,6 +206,14 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
             edit.setText("")
             dialog.dismiss()
         }
+    }
+
+    override fun showWaitProgress() {
+        waitLoading.isVisible = true
+    }
+
+    override fun hideWaitProgress() {
+        waitLoading.isVisible = false
     }
 
     override fun onDestroy() {

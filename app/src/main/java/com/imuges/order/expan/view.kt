@@ -20,25 +20,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * 动态设置bottomMargin
  */
 fun View.marginBottom(params: Int) {
-    val lp = when (parent) {
-        is ConstraintLayout -> {
-            layoutParams as ConstraintLayout.LayoutParams
-        }
-        is LinearLayout -> {
-            layoutParams as LinearLayout.LayoutParams
-        }
-        is RelativeLayout -> {
-            layoutParams as RelativeLayout.LayoutParams
-        }
-        is FrameLayout -> {
-            layoutParams as FrameLayout.LayoutParams
-        }
-        else -> {
-            return
-        }
-    }
-    lp.bottomMargin = params
-    layoutParams = lp
+    val lp = layoutParams
+    if (lp is ViewGroup.MarginLayoutParams) {
+        lp.bottomMargin = params
+        layoutParams = lp
+    } else return
 }
 
 
@@ -46,25 +32,11 @@ fun View.marginBottom(params: Int) {
  * 动态设置topMargin
  */
 fun View.marginTop(params: Int) {
-    val lp = when (parent) {
-        is ConstraintLayout -> {
-            layoutParams as ConstraintLayout.LayoutParams
-        }
-        is LinearLayout -> {
-            layoutParams as LinearLayout.LayoutParams
-        }
-        is RelativeLayout -> {
-            layoutParams as RelativeLayout.LayoutParams
-        }
-        is FrameLayout -> {
-            layoutParams as FrameLayout.LayoutParams
-        }
-        else -> {
-            return
-        }
-    }
-    lp.topMargin = params
-    layoutParams = lp
+    val lp = layoutParams
+    if (lp is ViewGroup.MarginLayoutParams) {
+        lp.topMargin = params
+        layoutParams = lp
+    } else return
 }
 
 
@@ -72,25 +44,11 @@ fun View.marginTop(params: Int) {
  * 动态设置startMargin
  */
 fun View.marginStart(params: Int) {
-    val lp = when (parent) {
-        is ConstraintLayout -> {
-            layoutParams as ConstraintLayout.LayoutParams
-        }
-        is LinearLayout -> {
-            layoutParams as LinearLayout.LayoutParams
-        }
-        is RelativeLayout -> {
-            layoutParams as RelativeLayout.LayoutParams
-        }
-        is FrameLayout -> {
-            layoutParams as FrameLayout.LayoutParams
-        }
-        else -> {
-            return
-        }
-    }
-    lp.marginStart = params
-    layoutParams = lp
+    val lp = layoutParams
+    if (lp is ViewGroup.MarginLayoutParams) {
+        lp.marginStart = params
+        layoutParams = lp
+    } else return
 }
 
 
@@ -98,25 +56,11 @@ fun View.marginStart(params: Int) {
  * 动态设置endMargin
  */
 fun View.marginEnd(params: Int) {
-    val lp = when (parent) {
-        is ConstraintLayout -> {
-            layoutParams as ConstraintLayout.LayoutParams
-        }
-        is LinearLayout -> {
-            layoutParams as LinearLayout.LayoutParams
-        }
-        is RelativeLayout -> {
-            layoutParams as RelativeLayout.LayoutParams
-        }
-        is FrameLayout -> {
-            layoutParams as FrameLayout.LayoutParams
-        }
-        else -> {
-            return
-        }
-    }
-    lp.marginEnd = params
-    layoutParams = lp
+    val lp = layoutParams
+    if (lp is ViewGroup.MarginLayoutParams) {
+        lp.marginEnd = params
+        layoutParams = lp
+    } else return
 }
 
 /**
