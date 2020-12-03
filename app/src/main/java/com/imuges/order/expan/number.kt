@@ -29,7 +29,7 @@ fun Int.px2dp() = ConvertUtils.px2dp(toFloat())
 /**
  * 默认当dp
  */
-val Float.px: Float
+val Float.dp: Float
     get() = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
         this,
@@ -39,9 +39,5 @@ val Float.px: Float
 /**
  * 默认当dp
  */
-val Int.px: Float
-    get() = TypedValue.applyDimension(
-        TypedValue.COMPLEX_UNIT_DIP,
-        this.toFloat(),
-        Resources.getSystem().displayMetrics
-    )
+val Int.dp: Float
+    get() = toFloat().dp

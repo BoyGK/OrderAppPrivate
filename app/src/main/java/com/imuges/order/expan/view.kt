@@ -4,11 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
-import androidx.constraintlayout.widget.ConstraintLayout
 
 /**
  * @author BGQ
@@ -95,7 +91,7 @@ private val mViewCache = mutableMapOf<Thread, MutableList<View>>()
 private fun addViewToCache(view: View) {
     val localThread = Thread.currentThread()
     mViewCache[localThread]!!.add(0, view)
-    if (mViewCache.size > 10) {
+    if (mViewCache[localThread]!!.size > 10) {
         mViewCache[localThread]!!.removeAt(10)
     }
 }
