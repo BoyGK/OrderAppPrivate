@@ -76,6 +76,8 @@ class ExcelReader {
 
     /**
      * 拆出单元格数据，合并至Excel对象
+     * 期望的Excel数据格式
+     * name / percent / unit / imagePath
      */
     private fun splitData(excelBean: Excel, workbook: Workbook) {
         for (sheetIndex in 0 until workbook.numberOfSheets) {
@@ -91,6 +93,9 @@ class ExcelReader {
                     val cellContent = row.getCell(cellIndex).stringCellValue
                     val cellBean = Cell(cellContent)
                     rowBean.cells.add(cellBean)
+                }
+                while (rowBean.cells.size < 4) {
+                    rowBean.cells.add(Cell(""))
                 }
                 sheetBean.rows.add(rowBean)
             }

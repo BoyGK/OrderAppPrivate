@@ -9,6 +9,9 @@ import java.io.File
 object PicturePathTransform {
 
     fun transform(tempPath: String): String {
+        if (tempPath.isEmpty()) {
+            return ""
+        }
         val tempFile = File(tempPath)
         val targetDir = File("${tempFile.parent}/pic")
         if (!targetDir.exists()) {

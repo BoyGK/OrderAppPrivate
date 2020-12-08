@@ -76,7 +76,7 @@ class AddGoodsModel {
     /**
      * 添加货物
      */
-    fun addGoods(goods: GoodsSimpleInfo, call: (goodsType: GoodsSimpleInfo) -> Unit) {
+    fun addGoods(goods: GoodsSimpleInfo, call: (goodsType: GoodsSimpleInfo) -> Unit = {}) {
         GlobalScope.launch {
             var dbGoods = Goods(
                 null,

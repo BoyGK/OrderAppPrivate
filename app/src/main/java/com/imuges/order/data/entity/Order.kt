@@ -5,9 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Created by "nullpointexception0" on 2020/11/22.
+ * Created by "BGQ" on 2020/11/22.
  */
-@Entity
+@Entity(tableName = "history_order")
 data class Order(
     /**
      * 订单id
@@ -24,11 +24,11 @@ data class Order(
     /**
      * 订单创建时间
      */
-    @ColumnInfo(name = "time") val time: String,
+    @ColumnInfo(name = "time") val time: Long,
     /**
      * 订单最后修改时间
      */
-    @ColumnInfo(name = "lastModifyTime") val lastModifyTime: String,
+    @ColumnInfo(name = "lastModifyTime") val lastModifyTime: Long,
     /**
      * 订单货物列表
      * @param {MutableList<GoodsOrderInfo>}:json格式

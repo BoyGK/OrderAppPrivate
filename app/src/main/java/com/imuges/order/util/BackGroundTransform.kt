@@ -9,6 +9,8 @@ import com.imuges.order.R
  */
 object BackGroundTransform {
 
+    fun randomBackground() = (Math.random() * 10).toInt() % 4 + 1
+
     @DrawableRes
     fun transform(background: Int): Int {
         return when (background) {

@@ -3,6 +3,7 @@ package com.imuges.order.presenter
 import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.GoodsOrderInfo
+import com.imuges.order.util.BackGroundTransform
 
 /**
  * @author BGQ
@@ -14,7 +15,7 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
     private var mTotalPercent = 0f
 
     override fun onViewCreate() {
-        val bg = (Math.random() * 10).toInt() % 3 + 1
+        val bg = BackGroundTransform.randomBackground()
         view?.setBackGround(bg)
         view?.setCustomerName("ABCD")
         view?.setOrderText("伟人之所以伟大，是因为他与别人共处逆境时，别人失去了信心，他却下决心实现自己的目标。")

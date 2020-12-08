@@ -58,6 +58,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
 
     private fun initView() {
         recyclerView.adapter = mMainAdapter
+        mMainAdapter.setEmptyView(R.layout.view_main_empty)
     }
 
     private fun initListener() {

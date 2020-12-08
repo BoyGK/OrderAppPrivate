@@ -3,12 +3,14 @@ package com.imuges.order.presenter
 import com.imuges.order.activity.views.IMainView
 import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.OrderSimpleInfo
-import com.imuges.order.db.AppDatabaseManager
+import com.imuges.order.model.MainModel
 
 /**
  * @author BGQ
  */
 class MainPresenter : BasePresenter<IMainView>() {
+
+    private val mMainModel by lazy { MainModel() }
 
     /**
      * 原数据
@@ -21,18 +23,15 @@ class MainPresenter : BasePresenter<IMainView>() {
     private val mOrderViewData by lazy { mutableListOf<OrderSimpleInfo>() }
 
     override fun onViewCreate() {
-        initFakeData()
+        initData()
     }
 
-    private fun initFakeData() {
-        for (i in 1..1000) {
-            val bg = (Math.random() * 10).toInt() % 3 + 1
-            mOrderData.add(
-                OrderSimpleInfo(i, "A${i}", i + 1.0f, System.currentTimeMillis(), bg)
-            )
+    private fun initData() {
+        mMainModel.loadOrders {
+            mOrderData.addAll(it)
+            mOrderViewData.addAll(mOrderData)
+            view?.updateList()
         }
-        mOrderViewData.addAll(mOrderData)
-        view?.updateList()
     }
 
     /**

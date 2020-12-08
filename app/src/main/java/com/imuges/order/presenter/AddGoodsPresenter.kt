@@ -165,15 +165,36 @@ class AddGoodsPresenter : BasePresenter<IAddGoodsView>() {
             GlobalScope.launch(Dispatchers.Main) {
                 splitExcelData(excel)
                 view?.hideWaitProgress()
+                //重新加载数据
+                mGoodsTypeData.clear()
+                mGoodsData.clear()
+                mGoodsCurrentTypeData.clear()
+                initTypeData()
             }
         }
     }
 
     /**
      * 将Excel数据插入数据库
+     * name / percent / unit / imagePath
      */
     private suspend fun splitExcelData(excel: Excel) = withContext(Dispatchers.IO) {
-
+        excel.sheets.forEach { sheet ->
+            mAddGoodsModel.addTypes(sheet.name) { type ->
+                sheet.rows.forEach { goods ->
+                    mAddGoodsModel.addGoods(
+                        GoodsSimpleInfo(
+                            0,
+                            type.goodsTypeId,
+                            goods.cells[0].text,
+                            goods.cells[1].text.toFloat(),
+                            goods.cells[2].text,
+                            PicturePathTransform.transform(goods.cells[3].text)
+                        )
+                    )
+                }
+            }
+        }
     }
 
 }
