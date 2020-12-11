@@ -1,2 +1,4 @@
+include ':base'
+include ':statistics'
 include ':app'
 rootProject.name = "OrderApp"
