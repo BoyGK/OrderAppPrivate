@@ -1,13 +1,13 @@
 package com.imuges.order.presenter
 
 import com.imuges.order.activity.views.IAddGoodsView
-import com.imuges.order.base.BasePresenter
 import com.imuges.order.data.GoodsSimpleInfo
 import com.imuges.order.data.GoodsTypeInfo
 import com.imuges.order.excel.Excel
 import com.imuges.order.excel.ExcelReader
 import com.imuges.order.model.AddGoodsModel
 import com.imuges.order.util.PicturePathTransform
+import com.nullpt.base.framework.BasePresenter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

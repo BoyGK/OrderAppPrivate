@@ -1,6 +1,6 @@
 package com.imuges.order.activity.views
 
-import com.imuges.order.base.IBaseView
+import com.nullpt.base.framework.IBaseView
 
 /**
  * @author BGQ

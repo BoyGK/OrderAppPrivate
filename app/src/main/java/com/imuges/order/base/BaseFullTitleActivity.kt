@@ -2,12 +2,9 @@ package com.imuges.order.base
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.blankj.utilcode.util.BarUtils
 import com.imuges.order.R
+import com.nullpt.base.framework.BaseMVPActivity
 
 /**
  * @author BGQ

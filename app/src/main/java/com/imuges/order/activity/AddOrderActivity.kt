@@ -1,10 +1,14 @@
 package com.imuges.order.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.transition.Explode
 import android.view.View
+import android.view.Window
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,15 +25,15 @@ import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.adapter.GoodsOrderAdapter
 import com.imuges.order.adapter.GoodsTypeAdapter
 import com.imuges.order.base.BaseFullTitleActivity
-import com.imuges.order.base.BasePresenter
-import com.imuges.order.base.ContentView
-import com.imuges.order.base.IBaseView
-import com.imuges.order.data.GoodsOrderInfo
 import com.imuges.order.data.GoodsTypeInfo
-import com.imuges.order.expan.loadBlurImage
 import com.imuges.order.presenter.AddOrderDefaultPresenter
 import com.imuges.order.presenter.AddOrderTypePresenter
 import com.imuges.order.util.BackGroundTransform
+import com.nullpt.base.entity.GoodsOrderInfo
+import com.nullpt.base.expan.loadBlurImage
+import com.nullpt.base.framework.BasePresenter
+import com.nullpt.base.framework.ContentView
+import com.nullpt.base.framework.IBaseView
 import com.r0adkll.slidr.Slidr
 import com.r0adkll.slidr.model.SlidrConfig
 import com.r0adkll.slidr.model.SlidrInterface
@@ -58,8 +62,11 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     companion object {
         private const val PRESENTER_ORDER_TYPE = "presenter_order_type"
 
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, AddOrderActivity::class.java))
+        fun startActivity(activity: Activity) {
+            activity.startActivity(
+                Intent(activity, AddOrderActivity::class.java),
+                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+            )
         }
     }
 
@@ -71,7 +78,7 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     }
 
     override fun onCreate() {
-        bindSlide()
+        //bindSlide()
         initTitleBar()
         initView()
         initListener()

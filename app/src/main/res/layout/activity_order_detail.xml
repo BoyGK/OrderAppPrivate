@@ -27,7 +27,7 @@
             tools:text="123" />
     </ScrollView>
 
-    <com.imuges.order.widget.TitleBarBackground
+    <com.nullpt.base.widget.TitleBarBackground
         android:id="@+id/titleBarCard"
         android:layout_width="match_parent"
         android:layout_height="60dp"

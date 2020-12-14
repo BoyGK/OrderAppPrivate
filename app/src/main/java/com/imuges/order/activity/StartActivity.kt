@@ -3,9 +3,9 @@ package com.imuges.order.activity
 import android.annotation.SuppressLint
 import com.imuges.order.R
 import com.imuges.order.base.BaseFullTitleActivity
-import com.imuges.order.base.BaseMVPActivity
-import com.imuges.order.base.BasePresenter
-import com.imuges.order.base.ContentView
+import com.nullpt.base.framework.BaseMVPActivity
+import com.nullpt.base.framework.BasePresenter
+import com.nullpt.base.framework.ContentView
 import kotlinx.android.synthetic.main.activity_start.*
 
 @SuppressLint("NonConstantResourceId")

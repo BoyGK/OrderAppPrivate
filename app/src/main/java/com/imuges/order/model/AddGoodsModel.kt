@@ -2,9 +2,9 @@ package com.imuges.order.model
 
 import com.imuges.order.data.GoodsSimpleInfo
 import com.imuges.order.data.GoodsTypeInfo
-import com.imuges.order.data.entity.Goods
-import com.imuges.order.data.entity.Type
-import com.imuges.order.expan.db
+import com.nullpt.base.entity.Goods
+import com.nullpt.base.entity.Type
+import com.nullpt.base.expan.db
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

@@ -7,14 +7,14 @@
     android:clipChildren="false"
     tools:context=".activity.StartActivity">
 
-    <com.imuges.order.widget.TitleBarBackground
+    <com.nullpt.base.widget.TitleBarBackground
         android:id="@+id/backCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.75"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.imuges.order.widget.LoadingView3
+    <com.nullpt.base.widget.LoadingView3
         android:id="@+id/loadCard3"
         android:layout_width="100dp"
         android:layout_height="100dp"

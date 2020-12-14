@@ -19,11 +19,11 @@ import com.imuges.order.activity.views.IAddGoodsView
 import com.imuges.order.adapter.GoodsByAddAdapter
 import com.imuges.order.adapter.GoodsTypeByAddAdapter
 import com.imuges.order.base.BaseFullTitleActivity
-import com.imuges.order.base.BasePresenter
-import com.imuges.order.base.ContentView
-import com.imuges.order.base.IBaseView
-import com.imuges.order.expan.*
 import com.imuges.order.presenter.AddGoodsPresenter
+import com.nullpt.base.expan.*
+import com.nullpt.base.framework.BasePresenter
+import com.nullpt.base.framework.ContentView
+import com.nullpt.base.framework.IBaseView
 import kotlinx.android.synthetic.main.activity_add_goods.*
 import java.io.FileDescriptor
 

@@ -1,5 +1,7 @@
 package com.imuges.order.data
 
+import com.nullpt.base.entity.GoodsOrderInfo
+
 /**
  * @author BGQ
  * 订单详细信息

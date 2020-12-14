@@ -1,8 +1,8 @@
 package com.imuges.order.activity.views
 
-import com.imuges.order.base.IBaseView
-import com.imuges.order.data.GoodsOrderInfo
 import com.imuges.order.data.GoodsTypeInfo
+import com.nullpt.base.entity.GoodsOrderInfo
+import com.nullpt.base.framework.IBaseView
 
 /**
  * @author BGQ

@@ -6,9 +6,9 @@ import android.text.style.AbsoluteSizeSpan
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.imuges.order.activity.views.IOrderDetailView
-import com.imuges.order.base.BasePresenter
-import com.imuges.order.data.GoodsOrderInfo
 import com.imuges.order.data.OrderInfo
+import com.nullpt.base.entity.GoodsOrderInfo
+import com.nullpt.base.framework.BasePresenter
 
 /**
  * @author BQG

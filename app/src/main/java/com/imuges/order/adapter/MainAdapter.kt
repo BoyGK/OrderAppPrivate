@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.imuges.order.R
 import com.imuges.order.data.OrderSimpleInfo
-import com.imuges.order.expan.loadBlurImage
+import com.nullpt.base.expan.loadBlurImage
 import com.imuges.order.util.BackGroundTransform
 
 /**

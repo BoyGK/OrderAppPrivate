@@ -4,8 +4,8 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.imuges.order.R
-import com.imuges.order.data.GoodsOrderInfo
-import com.imuges.order.expan.loadImage
+import com.nullpt.base.entity.GoodsOrderInfo
+import com.nullpt.base.expan.loadImage
 
 /**
  * @author BGQ

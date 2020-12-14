@@ -1,7 +1,7 @@
 package com.imuges.order.model
 
 import com.imuges.order.data.OrderSimpleInfo
-import com.imuges.order.expan.db
+import com.nullpt.base.expan.db
 import com.imuges.order.util.BackGroundTransform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
