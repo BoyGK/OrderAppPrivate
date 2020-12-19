@@ -1,14 +1,14 @@
 package com.imuges.order.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.transition.Explode
 import android.view.View
-import android.view.Window
+import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +30,7 @@ import com.imuges.order.presenter.AddOrderDefaultPresenter
 import com.imuges.order.presenter.AddOrderTypePresenter
 import com.imuges.order.util.BackGroundTransform
 import com.nullpt.base.entity.GoodsOrderInfo
-import com.nullpt.base.expan.loadBlurImage
+import com.nullpt.base.expan.*
 import com.nullpt.base.framework.BasePresenter
 import com.nullpt.base.framework.ContentView
 import com.nullpt.base.framework.IBaseView
@@ -62,10 +62,12 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     companion object {
         private const val PRESENTER_ORDER_TYPE = "presenter_order_type"
 
-        fun startActivity(activity: Activity) {
-            activity.startActivity(
-                Intent(activity, AddOrderActivity::class.java),
-                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+        fun startActivity(context: Context, view: View) {
+            context.startActivity(
+                Intent(context, AddOrderActivity::class.java),
+                ActivityOptions.makeScaleUpAnimation(
+                    view, view.left, view.top, view.width, view.height
+                ).toBundle()
             )
         }
     }
@@ -133,6 +135,7 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
         mGoodsTypeAdapter.setOnItemClickListener(this)
         mGoodsOrderAdapter.setOnItemChildClickListener(this)
         createOrder.setOnClickListener(this)
+        customerName.setOnClickListener(this)
         //监听货物列表滑动，主动定位type列表
         var lastGoodsPosition = 0
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -160,6 +163,9 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             createOrder -> {
                 defaultPresenter<AddOrderDefaultPresenter>().createOrder()
             }
+            customerName -> {
+                editCustomerName()
+            }
         }
     }
 
@@ -172,6 +178,24 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
         defaultPresenter<AddOrderDefaultPresenter>().position(typeId)
         //type选中
         presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).select(position)
+    }
+
+    /**
+     * 编辑商家名称
+     */
+    private fun editCustomerName() {
+        val layout = layout(R.layout.dialog_add_goods_type)
+        val edit = layout.findViewById<AppCompatEditText>(R.id.goods_type_edit)
+        val submit = layout.findViewById<AppCompatImageView>(R.id.goods_type_submit)
+        val dialog = showBottomDialog(layout, 0.5f)
+        edit.hint = "输入商家名称"
+        submit.setOnClickListener {
+            if (edit.text.toString().isEmpty()) {
+                return@setOnClickListener
+            }
+            defaultPresenter<AddOrderDefaultPresenter>().setCustomerName(edit.text.toString())
+            dialog.dismiss()
+        }
     }
 
     /**
@@ -233,6 +257,29 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     @SuppressLint("SetTextI18n")
     override fun setTotalPercent(percent: Float) {
         totalPercent.text = "总金额(￥)：${percent}元"
+    }
+
+    override fun showLoading() {
+        val dialog = showCenterDialog(ProgressBar(this))
+        dialog.setCancelable(false)
+    }
+
+    override fun hiddenLoading() {
+        latestDialog?.dismiss()
+        latestDialog = null
+    }
+
+    override fun createOrderSuccess() {
+        toast("创建订单成功")
+        onBackPressed()
+    }
+
+    override fun createOrderFailByNoMerchantName() {
+        toast("未编辑商家名称（点击“创建订单”编辑）")
+    }
+
+    override fun createOrderFailByNoSelect() {
+        toast("未选择货物")
     }
 
 }

@@ -75,12 +75,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
+                        android:text="创建订单"
                         android:textColor="#FFFFFFFF"
                         android:textSize="24sp"
+                        android:tooltipText="点击编辑商家名称"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/customerBack"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="ABCD" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

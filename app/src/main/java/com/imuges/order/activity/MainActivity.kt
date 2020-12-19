@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.addListener
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -30,9 +31,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 @SuppressLint("NonConstantResourceId")
 @ContentView(R.layout.activity_main)
 class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
-    OnItemChildClickListener {
+    OnItemChildClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private val mMainAdapter by lazy { MainAdapter(defaultPresenter<MainPresenter>().getViewData()) }
+    private val mRefreshLayout by lazy { root }
 
     companion object {
         fun startActivity(context: Context) {
@@ -59,6 +61,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     private fun initView() {
         recyclerView.adapter = mMainAdapter
         mMainAdapter.setEmptyView(R.layout.view_main_empty)
+        mRefreshLayout.setColorSchemeColors(getColor(R.color.mainTheme))
     }
 
     private fun initListener() {
@@ -66,6 +69,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
         addOrder.setOnClickListener(this)
         searchOrder.setOnClickListener(this)
         searchCancel.setOnClickListener(this)
+        mRefreshLayout.setOnRefreshListener(this)
         mMainAdapter.setOnItemChildClickListener(this)
         searchEdit.addTextChangedListener(afterTextChanged = {
             defaultPresenter<MainPresenter>().searchOrder(it.toString())
@@ -75,10 +79,10 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     override fun onClick(v: View) {
         when (v) {
             addGoods -> {
-                AddGoodsActivity.startActivity(this)
+                AddGoodsActivity.startActivity(this,addGoods)
             }
             addOrder -> {
-                AddOrderActivity.startActivity(this)
+                AddOrderActivity.startActivity(this, addOrder)
             }
             searchOrder -> {
                 startSearchAnim()
@@ -96,6 +100,10 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
 
     override fun updateList() {
         mMainAdapter.notifyDataSetChanged()
+    }
+
+    override fun hiddenRefreshing() {
+        mRefreshLayout.isRefreshing = false
     }
 
     /**
@@ -143,6 +151,10 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
         })
         animator.duration = 300
         animator.start()
+    }
+
+    override fun onRefresh() {
+        defaultPresenter<MainPresenter>().refresh()
     }
 
 }

@@ -74,7 +74,7 @@ class OrderDetailPresenter : BasePresenter<IOrderDetailView>() {
         for (i in 0..100) {
             orderlist.add(
                 GoodsOrderInfo(
-                    i, "Goods-$i", "", 1.1f * i, "斤", 0, i % 10
+                    "Goods-$i", "", 1.1f * i, "斤", 0, i % 10
                 )
             )
         }

@@ -2,6 +2,7 @@ package com.imuges.order.presenter
 
 import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.data.GoodsTypeInfo
+import com.imuges.order.model.AddOrderModel
 import com.nullpt.base.framework.BasePresenter
 
 
@@ -11,18 +12,23 @@ import com.nullpt.base.framework.BasePresenter
  */
 class AddOrderTypePresenter : BasePresenter<IAddOrderView>() {
 
+    private val mAddOrderModel by lazy { AddOrderModel() }
+
     private val mGoodsTypeData by lazy { mutableListOf<GoodsTypeInfo>() }
 
     override fun onViewCreate() {
-        initFakeData()
+        initData()
     }
 
-    private fun initFakeData() {
-        for (i in 0..10) {
-            mGoodsTypeData.add(GoodsTypeInfo(i, "Type-$i"))
+    private fun initData() {
+        mAddOrderModel.loadTypes {
+            if (it.isEmpty()) {
+                return@loadTypes
+            }
+            mGoodsTypeData.addAll(it)
+            mGoodsTypeData[0].select = true
+            view?.updateTypeList()
         }
-        mGoodsTypeData[0].select = true
-        view?.updateTypeList()
     }
 
     fun getGoodsTypeData() = mGoodsTypeData

@@ -19,11 +19,11 @@
             android:name=".activity.StartActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
@@ -32,8 +32,7 @@
         <activity
             android:name=".activity.AddOrderActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/SlideTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.AddGoodsActivity"
             android:launchMode="singleTop"

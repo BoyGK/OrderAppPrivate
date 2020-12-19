@@ -1,7 +1,10 @@
 package com.imuges.order.presenter
 
+import android.os.SystemClock
 import com.imuges.order.activity.views.IAddOrderView
+import com.imuges.order.model.AddOrderModel
 import com.imuges.order.util.BackGroundTransform
+import com.imuges.order.util.MottoTransform
 import com.nullpt.base.entity.GoodsOrderInfo
 import com.nullpt.base.framework.BasePresenter
 
@@ -12,31 +15,49 @@ import com.nullpt.base.framework.BasePresenter
 class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
 
     private val mGoodsData by lazy { mutableListOf<GoodsOrderInfo>() }
+
+    private var mCustomerName = ""
     private var mTotalPercent = 0f
 
+    private val mAddOrderModel by lazy { AddOrderModel() }
+
     override fun onViewCreate() {
-        val bg = BackGroundTransform.randomBackground()
-        view?.setBackGround(bg)
-        view?.setCustomerName("ABCD")
-        view?.setOrderText("伟人之所以伟大，是因为他与别人共处逆境时，别人失去了信心，他却下决心实现自己的目标。")
+        view?.setBackGround(BackGroundTransform.randomBackground())
+        view?.setOrderText(MottoTransform.randomMotto())
+
         view?.setGoodsToday(System.currentTimeMillis())
         view?.setTotalPercent(mTotalPercent)
 
-        initFakeData()
+        initData()
     }
 
-    private fun initFakeData() {
-        for (i in 0..100) {
-            mGoodsData.add(
-                GoodsOrderInfo(
-                    i, "Goods-$i", "", i * 1.1f, "个", i / 10, 0
+    private fun initData() {
+        mAddOrderModel.loadGoods {
+            val goodsOrderInfos = it.flatMap { goods ->
+                mutableListOf(
+                    GoodsOrderInfo(
+                        goods.goodsName,
+                        goods.picturePath,
+                        goods.percent,
+                        goods.unit,
+                        goods.typeId
+                    )
                 )
-            )
+            }
+            mGoodsData.addAll(goodsOrderInfos)
+            view?.updateGoodsList()
         }
-        view?.updateTypeList()
     }
 
     fun getGoodsData() = mGoodsData
+
+    /**
+     * 设置商家名称
+     */
+    fun setCustomerName(name: String) {
+        mCustomerName = name
+        view?.setCustomerName(name)
+    }
 
     /**
      * 定位
@@ -73,6 +94,19 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
      * 出单，创建订单信息
      */
     fun createOrder() {
-
+        if (mCustomerName.isEmpty()) {
+            view?.createOrderFailByNoMerchantName()
+            return
+        }
+        if (mTotalPercent == 0f || mGoodsData.isEmpty()) {
+            view?.createOrderFailByNoSelect()
+            return
+        }
+        view?.showLoading()
+        mAddOrderModel.createOrders(mCustomerName, mTotalPercent, mGoodsData) {
+            SystemClock.sleep(500L)
+            view?.hiddenLoading()
+            view?.createOrderSuccess()
+        }
     }
 }

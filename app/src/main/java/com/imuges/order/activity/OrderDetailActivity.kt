@@ -1,10 +1,11 @@
 package com.imuges.order.activity
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
-import com.blankj.utilcode.util.ConvertUtils
 import com.imuges.order.R
 import com.imuges.order.activity.views.IOrderDetailView
 import com.imuges.order.base.BaseFullTitleActivity
@@ -23,8 +24,11 @@ import kotlinx.android.synthetic.main.activity_order_detail.*
 class OrderDetailActivity : BaseFullTitleActivity(), View.OnClickListener, IOrderDetailView {
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, OrderDetailActivity::class.java))
+        fun startActivity(activity: Activity) {
+            activity.startActivity(
+                Intent(activity, OrderDetailActivity::class.java),
+                ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
+            )
         }
     }
 
@@ -38,8 +42,8 @@ class OrderDetailActivity : BaseFullTitleActivity(), View.OnClickListener, IOrde
     }
 
     override fun initTitleBar() {
-        setStateBarColor(getColor(R.color.mainTheme))
-        titleBarCard.mBolHeight = ConvertUtils.dp2px(20f).toFloat()
+        setStateBarColor(Color.WHITE)
+        setStateBarLightModel(true)
     }
 
     override fun setOrderContent(text: CharSequence) {

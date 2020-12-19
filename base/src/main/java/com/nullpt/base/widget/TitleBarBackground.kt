@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.ViewCompat
 
 /**
  * @author BGQ
@@ -14,7 +15,7 @@ import android.view.View
  */
 class TitleBarBackground @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr) {
+) : View(context, attrs, defStyleAttr), Runnable {
 
     private val mPaint by lazy { Paint() }
     private val mPath by lazy { Path() }
@@ -31,7 +32,7 @@ class TitleBarBackground @JvmOverloads constructor(
     private var offset = 0f
 
     //动画刷新间隔
-    private val POSITION = 15L
+    private val POSITION = 30L
 
     init {
         mPaint.isAntiAlias = true
@@ -72,13 +73,15 @@ class TitleBarBackground @JvmOverloads constructor(
      * 执行动画
      */
     private fun postAnimation() {
-        postDelayed({
-            offset += 10f
-            if (offset >= width.toFloat()) {
-                offset = width.toFloat() - offset
-            }
-            invalidate()
-        }, POSITION)
+        ViewCompat.postOnAnimationDelayed(this, this, POSITION)
+    }
+
+    override fun run() {
+        offset += 10f
+        if (offset >= width.toFloat()) {
+            offset = width.toFloat() - offset
+        }
+        invalidate()
     }
 
 }

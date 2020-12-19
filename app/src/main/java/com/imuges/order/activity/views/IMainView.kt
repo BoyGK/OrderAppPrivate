@@ -9,4 +9,6 @@ interface IMainView : IBaseView {
 
     fun updateList()
 
+    fun hiddenRefreshing()
+
 }

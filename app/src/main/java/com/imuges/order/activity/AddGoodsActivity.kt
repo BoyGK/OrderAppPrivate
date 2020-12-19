@@ -1,6 +1,7 @@
 package com.imuges.order.activity
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -44,8 +45,13 @@ class AddGoodsActivity : BaseFullTitleActivity(), IAddGoodsView, View.OnClickLis
     }
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, AddGoodsActivity::class.java))
+        fun startActivity(context: Context, view: View) {
+            context.startActivity(
+                Intent(context, AddGoodsActivity::class.java),
+                ActivityOptions.makeScaleUpAnimation(
+                    view, view.left, view.top, view.width, view.height
+                ).toBundle()
+            )
         }
     }
 

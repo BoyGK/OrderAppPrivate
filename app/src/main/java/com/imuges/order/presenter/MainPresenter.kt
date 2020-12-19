@@ -26,6 +26,13 @@ class MainPresenter : BasePresenter<IMainView>() {
         initData()
     }
 
+    override fun onViewReStart() {
+        refresh()
+    }
+
+    /**
+     * 初始化数据
+     */
     private fun initData() {
         mMainModel.loadOrders {
             mOrderData.addAll(it)
@@ -38,6 +45,26 @@ class MainPresenter : BasePresenter<IMainView>() {
      * 获取页面数据
      */
     fun getViewData() = mOrderViewData
+
+
+    /**
+     * 刷新数据
+     */
+    fun refresh() {
+        mMainModel.loadOrders {
+            if (it.size == mOrderData.size) {
+                //没有增加项(不存在内容刷新)
+                view?.hiddenRefreshing()
+                return@loadOrders
+            }
+            mOrderData.clear()
+            mOrderViewData.clear()
+            mOrderData.addAll(it)
+            mOrderViewData.addAll(mOrderData)
+            view?.updateList()
+            view?.hiddenRefreshing()
+        }
+    }
 
     /**
      * 搜索账单列表

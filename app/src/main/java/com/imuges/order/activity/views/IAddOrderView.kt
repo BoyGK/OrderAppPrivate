@@ -34,4 +34,13 @@ interface IAddOrderView : IBaseView {
 
     fun setTotalPercent(percent: Float)
 
+    fun showLoading()
+
+    fun hiddenLoading()
+
+    fun createOrderSuccess()
+
+    fun createOrderFailByNoMerchantName()
+
+    fun createOrderFailByNoSelect()
 }

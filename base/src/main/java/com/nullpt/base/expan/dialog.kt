@@ -16,6 +16,10 @@ import com.nullpt.base.R
  * 弹框方式扩展
  */
 
+/**
+ * 保存最后一次弹出的Dialog
+ */
+var latestDialog: Dialog? = null
 
 /**
  * 打开一个Pop Window
@@ -55,6 +59,7 @@ fun Activity.showCenterDialog(view: View): Dialog {
     window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     window.attributes = attr
     dialog.show()
+    latestDialog = dialog
     return dialog
 }
 
@@ -77,6 +82,7 @@ fun Activity.showBottomDialog(view: View, dimAmount: Float = 0f): Dialog {
     attr.windowAnimations = R.style.dialog_bottom
     window.attributes = attr
     dialog.show()
+    latestDialog = dialog
     return dialog
 }
 
