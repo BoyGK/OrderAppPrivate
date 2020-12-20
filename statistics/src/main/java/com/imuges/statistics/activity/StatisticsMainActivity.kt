@@ -1,5 +1,8 @@
 package com.imuges.statistics.activity
 
+import android.app.ActivityOptions
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,17 @@ import com.nullpt.base.framework.BasePermissionActivity
  * 统计模块
  */
 class StatisticsMainActivity : BasePermissionActivity() {
+
+    companion object {
+        fun startActivity(context: Context, view: View) {
+            context.startActivity(
+                Intent(context, StatisticsMainActivity::class.java),
+                ActivityOptions.makeScaleUpAnimation(
+                    view, view.left, view.top, view.width, view.height
+                ).toBundle()
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

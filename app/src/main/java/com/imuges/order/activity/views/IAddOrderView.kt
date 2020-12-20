@@ -9,6 +9,8 @@ import com.nullpt.base.framework.IBaseView
  */
 interface IAddOrderView : IBaseView {
 
+    fun getInitOrderId(): Int
+
     fun setBackGround(background: Int)
 
     fun setCustomerName(name: String)

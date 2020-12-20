@@ -7,6 +7,8 @@ import com.nullpt.base.framework.IBaseView
  */
 interface IOrderDetailView : IBaseView {
 
+    fun getInitOrderId(): Int
+
     fun setOrderContent(text: CharSequence)
 
 }

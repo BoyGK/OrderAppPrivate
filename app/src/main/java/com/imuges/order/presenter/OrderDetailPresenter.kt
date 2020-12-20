@@ -7,7 +7,7 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.TimeUtils
 import com.imuges.order.activity.views.IOrderDetailView
 import com.imuges.order.data.OrderInfo
-import com.nullpt.base.entity.GoodsOrderInfo
+import com.imuges.order.model.OrderDetailsModel
 import com.nullpt.base.framework.BasePresenter
 
 /**
@@ -15,11 +15,25 @@ import com.nullpt.base.framework.BasePresenter
  */
 class OrderDetailPresenter : BasePresenter<IOrderDetailView>() {
 
+    private val mOrderDetailsModel by lazy { OrderDetailsModel() }
     private lateinit var mOrderInfo: OrderInfo
 
+    private val nextLine = "\n"
+
     override fun onViewCreate() {
-        initFakeData()
-        createOrderStruct()
+        initData()
+    }
+
+    override fun onViewReStart() {
+        initData()
+    }
+
+    private fun initData() {
+        view ?: return
+        mOrderDetailsModel.loadOrderDetails(view!!.getInitOrderId()) {
+            mOrderInfo = it
+            createOrderStruct()
+        }
     }
 
     /**
@@ -29,12 +43,13 @@ class OrderDetailPresenter : BasePresenter<IOrderDetailView>() {
         val textBuilder = StringBuilder()
         //标题，商户和时间信息
         textBuilder.append("客户名称 : ")
-            .append(mOrderInfo.name).appendln()
-        textBuilder.append("订单创建时间 : ").appendln()
-            .append("    ").append(TimeUtils.millis2String(mOrderInfo.time)).appendln()
-        textBuilder.append("订单最后修改时间 : ").appendln()
-            .append("    ").append(TimeUtils.millis2String(mOrderInfo.lastModifyTime)).appendln()
-        textBuilder.appendln()
+            .append(mOrderInfo.name).append(nextLine)
+        textBuilder.append("订单创建时间 : ").append(nextLine)
+            .append("    ").append(TimeUtils.millis2String(mOrderInfo.time)).append(nextLine)
+        textBuilder.append("订单最后修改时间 : ").append(nextLine)
+            .append("    ").append(TimeUtils.millis2String(mOrderInfo.lastModifyTime))
+            .append(nextLine)
+        textBuilder.append(nextLine)
 
         val sizeSpanStart = textBuilder.length
 
@@ -44,18 +59,18 @@ class OrderDetailPresenter : BasePresenter<IOrderDetailView>() {
                 .append(mOrderInfo.goodsOrderInfos[i].goodsName).append(" : ")
                 .append(mOrderInfo.goodsOrderInfos[i].percent).append("/")
                 .append(mOrderInfo.goodsOrderInfos[i].unit).append(" × ")
-                .append(mOrderInfo.goodsOrderInfos[i].selectCount).append(" .").appendln()
+                .append(mOrderInfo.goodsOrderInfos[i].selectCount).append(" .").append(nextLine)
             textBuilder.append("    金额 : ")
                 .append(mOrderInfo.goodsOrderInfos[i].percent * mOrderInfo.goodsOrderInfos[i].selectCount)
-                .append("元 .").appendln()
+                .append("元 .").append(nextLine)
         }
-        textBuilder.appendln()
+        textBuilder.append(nextLine)
 
         val sizeSpanEnd = textBuilder.length
 
         //结尾，总金额信息
         textBuilder.append("总交易金额(￥) : ")
-            .append(mOrderInfo.percent).append("元").appendln()
+            .append(mOrderInfo.percent).append("元").append(nextLine)
 
         //调整正文文字大小
         val spannableString = SpannableString(textBuilder)
@@ -67,24 +82,5 @@ class OrderDetailPresenter : BasePresenter<IOrderDetailView>() {
         )
 
         view?.setOrderContent(spannableString)
-    }
-
-    private fun initFakeData() {
-        val orderlist = mutableListOf<GoodsOrderInfo>()
-        for (i in 0..100) {
-            orderlist.add(
-                GoodsOrderInfo(
-                    "Goods-$i", "", 1.1f * i, "斤", 0, i % 10
-                )
-            )
-        }
-        mOrderInfo = OrderInfo(
-            0,
-            "A-",
-            2080.0f,
-            System.currentTimeMillis() - 24 * 60 * 60 * 1000,
-            System.currentTimeMillis(),
-            orderlist
-        )
     }
 }

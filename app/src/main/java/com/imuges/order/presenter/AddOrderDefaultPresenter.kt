@@ -1,11 +1,14 @@
 package com.imuges.order.presenter
 
 import android.os.SystemClock
+import com.blankj.utilcode.util.GsonUtils
+import com.google.gson.reflect.TypeToken
 import com.imuges.order.activity.views.IAddOrderView
 import com.imuges.order.model.AddOrderModel
 import com.imuges.order.util.BackGroundTransform
 import com.imuges.order.util.MottoTransform
 import com.nullpt.base.entity.GoodsOrderInfo
+import com.nullpt.base.entity.Order
 import com.nullpt.base.framework.BasePresenter
 
 /**
@@ -15,6 +18,7 @@ import com.nullpt.base.framework.BasePresenter
 class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
 
     private val mGoodsData by lazy { mutableListOf<GoodsOrderInfo>() }
+    private lateinit var mOrder: Order
 
     private var mCustomerName = ""
     private var mTotalPercent = 0f
@@ -28,9 +32,16 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
         view?.setGoodsToday(System.currentTimeMillis())
         view?.setTotalPercent(mTotalPercent)
 
-        initData()
+        if (view?.getInitOrderId() == -1) {
+            initData()
+        } else {
+            initOrderData()
+        }
     }
 
+    /**
+     * 初始化货物
+     */
     private fun initData() {
         mAddOrderModel.loadGoods {
             val goodsOrderInfos = it.flatMap { goods ->
@@ -45,6 +56,26 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
                 )
             }
             mGoodsData.addAll(goodsOrderInfos)
+            view?.updateGoodsList()
+        }
+    }
+
+    /**
+     * 初始化已有订单
+     */
+    private fun initOrderData() {
+        view ?: return
+        mAddOrderModel.loadOrder(view!!.getInitOrderId()) { order ->
+            mOrder = order
+            mTotalPercent = order.percent
+            view?.setCustomerName(order.name)
+            view?.setTotalPercent(order.percent)
+            mGoodsData.addAll(
+                GsonUtils.fromJson(
+                    order.goods,
+                    object : TypeToken<MutableList<GoodsOrderInfo>>() {}.type
+                )
+            )
             view?.updateGoodsList()
         }
     }
@@ -91,9 +122,20 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
     }
 
     /**
+     * 提交订单
+     */
+    fun submitOrder() {
+        if (view?.getInitOrderId() == -1) {
+            createOrder()
+        } else {
+            modifyOrder()
+        }
+    }
+
+    /**
      * 出单，创建订单信息
      */
-    fun createOrder() {
+    private fun createOrder() {
         if (mCustomerName.isEmpty()) {
             view?.createOrderFailByNoMerchantName()
             return
@@ -104,6 +146,27 @@ class AddOrderDefaultPresenter : BasePresenter<IAddOrderView>() {
         }
         view?.showLoading()
         mAddOrderModel.createOrders(mCustomerName, mTotalPercent, mGoodsData) {
+            SystemClock.sleep(500L)
+            view?.hiddenLoading()
+            view?.createOrderSuccess()
+        }
+    }
+
+    /**
+     * 出单，修改已有订单信息
+     */
+    private fun modifyOrder() {
+        if (!::mOrder.isInitialized) {
+            return
+        }
+        view ?: return
+        view?.showLoading()
+        val order = mOrder.copy(
+            percent = mTotalPercent,
+            lastModifyTime = System.currentTimeMillis(),
+            goods = GsonUtils.toJson(mGoodsData)
+        )
+        mAddOrderModel.updateOrder(order) {
             SystemClock.sleep(500L)
             view?.hiddenLoading()
             view?.createOrderSuccess()

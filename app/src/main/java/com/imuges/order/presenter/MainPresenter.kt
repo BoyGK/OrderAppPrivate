@@ -46,17 +46,16 @@ class MainPresenter : BasePresenter<IMainView>() {
      */
     fun getViewData() = mOrderViewData
 
+    /**
+     * 获取历史订单id
+     */
+    fun getOrderId(position: Int): Int = mOrderViewData[position].orderId
 
     /**
      * 刷新数据
      */
     fun refresh() {
         mMainModel.loadOrders {
-            if (it.size == mOrderData.size) {
-                //没有增加项(不存在内容刷新)
-                view?.hiddenRefreshing()
-                return@loadOrders
-            }
             mOrderData.clear()
             mOrderViewData.clear()
             mOrderData.addAll(it)

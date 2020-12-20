@@ -59,4 +59,34 @@ class AddOrderModel {
         }
     }
 
+    /**
+     * 加载订单
+     */
+    fun loadOrder(
+        orderId: Int,
+        call: ((order: Order) -> Unit)
+    ) {
+        GlobalScope.launch {
+            val order = mOrderDao.queryByOrderId(orderId)
+            withContext(Dispatchers.Main) {
+                call.invoke(order)
+            }
+        }
+    }
+
+    /**
+     * 加载订单
+     */
+    fun updateOrder(
+        order: Order,
+        call: () -> Unit = {}
+    ) {
+        GlobalScope.launch {
+            mOrderDao.update(order)
+            withContext(Dispatchers.Main) {
+                call.invoke()
+            }
+        }
+    }
+
 }

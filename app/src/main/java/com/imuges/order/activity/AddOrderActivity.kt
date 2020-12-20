@@ -34,10 +34,6 @@ import com.nullpt.base.expan.*
 import com.nullpt.base.framework.BasePresenter
 import com.nullpt.base.framework.ContentView
 import com.nullpt.base.framework.IBaseView
-import com.r0adkll.slidr.Slidr
-import com.r0adkll.slidr.model.SlidrConfig
-import com.r0adkll.slidr.model.SlidrInterface
-import com.r0adkll.slidr.model.SlidrPosition
 import kotlinx.android.synthetic.main.activity_add_order.*
 import kotlin.math.abs
 
@@ -50,8 +46,6 @@ import kotlin.math.abs
 class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickListener,
     OnItemClickListener, OnItemChildClickListener {
 
-    private lateinit var mSlideLock: SlidrInterface
-
     private val mGoodsTypeAdapter by lazy {
         GoodsTypeAdapter(presenter<AddOrderTypePresenter>(PRESENTER_ORDER_TYPE).getGoodsTypeData())
     }
@@ -59,12 +53,26 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
         GoodsOrderAdapter(defaultPresenter<AddOrderDefaultPresenter>().getGoodsData())
     }
 
+    private val orderId by lazy { intent.getIntExtra(KEY_ORDER_ID, -1) }
+
     companion object {
         private const val PRESENTER_ORDER_TYPE = "presenter_order_type"
+        private const val KEY_ORDER_ID = "key_order_id"
 
         fun startActivity(context: Context, view: View) {
             context.startActivity(
                 Intent(context, AddOrderActivity::class.java),
+                ActivityOptions.makeScaleUpAnimation(
+                    view, view.left, view.top, view.width, view.height
+                ).toBundle()
+            )
+        }
+
+        fun startActivity(context: Context, view: View, orderId: Int) {
+            context.startActivity(
+                Intent(context, AddOrderActivity::class.java).apply {
+                    putExtra(KEY_ORDER_ID, orderId)
+                },
                 ActivityOptions.makeScaleUpAnimation(
                     view, view.left, view.top, view.width, view.height
                 ).toBundle()
@@ -80,7 +88,6 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
     }
 
     override fun onCreate() {
-        //bindSlide()
         initTitleBar()
         initView()
         initListener()
@@ -104,25 +111,8 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             tabRecyclerViewLp.topMargin =
                 ConvertUtils.dp2px(254f) + BarUtils.getStatusBarHeight() - offs
             tabRecyclerView.layoutParams = tabRecyclerViewLp
-            orderText.alpha =
-                1f - (offs / (ConvertUtils.dp2px(100f)).toFloat())
-            /*
-            if (offs == 0) {
-                mSlideLock.unlock()
-            } else {
-                mSlideLock.lock()
-            }*/
+            orderText.alpha = 1f - (offs / (ConvertUtils.dp2px(100f)).toFloat())
         })
-    }
-
-    private fun bindSlide() {
-        val config = SlidrConfig.Builder()
-            .position(SlidrPosition.TOP)
-            .build()
-        mSlideLock = Slidr.attach(this, config)
-        //mSlideLock.unlock()
-        //暂时不允许下滑退出
-        mSlideLock.lock()
     }
 
     private fun initView() {
@@ -161,7 +151,7 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
                 onBackPressed()
             }
             createOrder -> {
-                defaultPresenter<AddOrderDefaultPresenter>().createOrder()
+                defaultPresenter<AddOrderDefaultPresenter>().submitOrder()
             }
             customerName -> {
                 editCustomerName()
@@ -211,6 +201,8 @@ class AddOrderActivity : BaseFullTitleActivity(), IAddOrderView, View.OnClickLis
             }
         }
     }
+
+    override fun getInitOrderId(): Int = orderId
 
     override fun setBackGround(background: Int) {
         imageBackGround.loadBlurImage(BackGroundTransform.transform(background), 16, 2)

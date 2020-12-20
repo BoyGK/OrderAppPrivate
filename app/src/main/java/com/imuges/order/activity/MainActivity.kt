@@ -19,6 +19,7 @@ import com.imuges.order.activity.views.IMainView
 import com.imuges.order.adapter.MainAdapter
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.presenter.MainPresenter
+import com.imuges.statistics.activity.StatisticsMainActivity
 import com.nullpt.base.framework.BasePresenter
 import com.nullpt.base.framework.ContentView
 import com.nullpt.base.framework.IBaseView
@@ -69,6 +70,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
         addOrder.setOnClickListener(this)
         searchOrder.setOnClickListener(this)
         searchCancel.setOnClickListener(this)
+        floatingTools.setOnClickListener(this)
         mRefreshLayout.setOnRefreshListener(this)
         mMainAdapter.setOnItemChildClickListener(this)
         searchEdit.addTextChangedListener(afterTextChanged = {
@@ -79,7 +81,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     override fun onClick(v: View) {
         when (v) {
             addGoods -> {
-                AddGoodsActivity.startActivity(this,addGoods)
+                AddGoodsActivity.startActivity(this, addGoods)
             }
             addOrder -> {
                 AddOrderActivity.startActivity(this, addOrder)
@@ -91,11 +93,17 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
                 stopSearchAnim()
                 defaultPresenter<MainPresenter>().searchOrder(":cancel")
             }
+            floatingTools -> {
+                StatisticsMainActivity.startActivity(this, floatingTools)
+            }
         }
     }
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        OrderDetailActivity.startActivity(this)
+        OrderDetailActivity.startActivity(
+            this,
+            defaultPresenter<MainPresenter>().getOrderId(position)
+        )
     }
 
     override fun updateList() {

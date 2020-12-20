@@ -74,6 +74,8 @@ dependencies {
 
     //AndroidUtilCode
     api 'com.blankj:utilcodex:1.29.0'
+    //gson
+    api 'com.google.code.gson:gson:2.8.6'
 
     //base adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'

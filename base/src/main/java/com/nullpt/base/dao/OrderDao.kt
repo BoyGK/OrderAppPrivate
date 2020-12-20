@@ -12,6 +12,9 @@ interface OrderDao {
     @Query("select * from history_order")
     fun queryAll(): MutableList<Order>
 
+    @Query("select * from history_order where orderId = :id")
+    fun queryByOrderId(id: Int): Order
+
     @Insert
     fun insert(order: Order)
 
