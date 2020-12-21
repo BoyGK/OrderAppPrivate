@@ -100,10 +100,18 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     }
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-        OrderDetailActivity.startActivity(
-            this,
-            defaultPresenter<MainPresenter>().getOrderId(position)
-        )
+        when (view.id) {
+            R.id.clickView -> {
+                OrderDetailActivity.startActivity(
+                    this,
+                    defaultPresenter<MainPresenter>().getOrderId(position)
+                )
+            }
+            R.id.delete -> {
+                // TODO: 2020/12/21 添加弹窗确认
+                defaultPresenter<MainPresenter>().deleteItem(position)
+            }
+        }
     }
 
     override fun updateList() {

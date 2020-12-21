@@ -83,4 +83,11 @@ class MainPresenter : BasePresenter<IMainView>() {
         view?.updateList()
     }
 
+    /**
+     * 删除历史订单
+     */
+    fun deleteItem(position: Int) {
+
+    }
+
 }

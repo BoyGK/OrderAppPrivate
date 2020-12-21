@@ -22,7 +22,6 @@ class MainFragment : BaseMVPFragment(), View.OnClickListener {
     }
 
     override fun initView() {
-        buttonTest.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {

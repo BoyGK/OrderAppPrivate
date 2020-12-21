@@ -6,8 +6,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.imuges.order.R
 import com.imuges.order.data.OrderSimpleInfo
-import com.nullpt.base.expan.loadBlurImage
 import com.imuges.order.util.BackGroundTransform
+import com.nullpt.base.expan.loadBlurImage
 
 /**
  * @author BGQ
@@ -17,7 +17,7 @@ class MainAdapter(data: MutableList<OrderSimpleInfo>) :
     BaseQuickAdapter<OrderSimpleInfo, BaseViewHolder>(R.layout.item_main_order_list, data) {
 
     init {
-        addChildClickViewIds(R.id.clickView)
+        addChildClickViewIds(R.id.clickView, R.id.delete)
     }
 
     override fun convert(holder: BaseViewHolder, item: OrderSimpleInfo) {
