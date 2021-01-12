@@ -14,12 +14,12 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
+import com.example.statisticscompose.activity.ComposeStatisticsMainActivity
 import com.imuges.order.R
 import com.imuges.order.activity.views.IMainView
 import com.imuges.order.adapter.MainAdapter
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.presenter.MainPresenter
-import com.imuges.statistics.activity.StatisticsMainActivity
 import com.nullpt.base.framework.BasePresenter
 import com.nullpt.base.framework.ContentView
 import com.nullpt.base.framework.IBaseView
@@ -94,7 +94,7 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
                 defaultPresenter<MainPresenter>().searchOrder(":cancel")
             }
             floatingTools -> {
-                StatisticsMainActivity.startActivity(this, floatingTools)
+                ComposeStatisticsMainActivity.startActivity(this, floatingTools)
             }
         }
     }

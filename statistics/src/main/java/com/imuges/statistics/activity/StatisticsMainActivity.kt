@@ -13,6 +13,8 @@ import com.nullpt.base.framework.BasePermissionActivity
 /**
  * @author BGQ
  * 统计模块
+ * 使用navigation单Activity多Fragment方式开发
+ * navigation饱受大佬们的诟病，已学使用待议
  */
 class StatisticsMainActivity : BasePermissionActivity() {
 

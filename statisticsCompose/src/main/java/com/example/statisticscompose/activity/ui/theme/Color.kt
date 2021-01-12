@@ -1,4 +1,4 @@
-package com.example.statisticscompose.ui.theme
+package com.example.statisticscompose.activity.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
