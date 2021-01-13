@@ -1,5 +1,0 @@
-include ':base'
-include ':statistics'
-include ':app'
-include ':statisticsCompose'
-rootProject.name = "OrderApp"
