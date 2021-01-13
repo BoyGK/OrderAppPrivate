@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "com.nullpt.orderappprivate"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        //id 'kotlin-android-extensions' 会和 compose true冲突，导致无限期的构建。。。。。。。。。。。。
+        //kotlin-android-extensions已被弃用，todo替换成google推荐的viewbinding
+        compose false
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerVersion kotlin_version
+    }
+}
+
+dependencies {
+
+    implementation project(path: ':base')
+    implementation project(path: ':statisticsCompose')
+
+    //room
+    kapt "androidx.room:room-compiler:2.2.5"
+    //glide
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nullpt.statisticscompose">
+
+    <application>
+        <activity
+            android:name="com.nullpt.statisticscompose.activity.base.ComposeBaseActivity"
+            android:theme="@style/Theme.OrderApp.NoActionBar" />
+        <activity
+            android:name="com.nullpt.statisticscompose.activity.ComposeStatisticsMainActivity"
+            android:theme="@style/Theme.OrderApp.NoActionBar" />
+    </application>
+
+</manifest>
