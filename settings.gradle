@@ -2,3 +2,4 @@ rootProject.name = "OrderAppPrivate"
 include ':app'
 include ':base'
 include ':statisticsCompose'
+include ':hotfit'

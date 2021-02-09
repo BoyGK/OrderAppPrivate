@@ -1,34 +1,33 @@
 package com.imuges.order.app
 
 import android.app.Application
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import android.content.Context
 import com.nullpt.base.app.MainApplication
-import com.nullpt.base.db.AppDatabaseManager
+import com.nullpt.hotfit.Hotfit
+import com.nullpt.hotfit.Hotfit2
+import com.nullpt.hotfit.Hotfit3
 
 /**
  * @author BQG
  */
-class App : Application(), LifecycleOwner {
-
-    /**
-     * Application生命周期感知
-     */
-    private var lifecycleRegistry: LifecycleRegistry
+class App : Application() {
 
     init {
         MainApplication.inject(this)
+    }
 
-        lifecycleRegistry = LifecycleRegistry(this)
-        lifecycle.addObserver(MainApplication())
+    override fun attachBaseContext(base: Context) {
+        super.attachBaseContext(base)
+        MainApplication.attachBaseContext(base)
     }
 
     override fun onCreate() {
         super.onCreate()
-        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        MainApplication.onCreate()
+        //启动热修复
+        //Hotfit.check(this)
+        //Hotfit2.check(this)
+        //Hotfit3.check(this)
     }
-
-    override fun getLifecycle() = lifecycleRegistry
 
 }

@@ -1,31 +1,40 @@
 package com.nullpt.base.app
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
 import com.nullpt.base.db.AppDatabaseManager
 import com.nullpt.base.expan.TAG
 
 /**
  * @author BGQ
  */
-class MainApplication : LifecycleObserver {
+object MainApplication {
 
-    companion object {
-        /**
-         * Application对象
-         */
-        lateinit var instance: Application
+    /**
+     * Application对象
+     */
+    lateinit var instance: Application
 
-        fun inject(instance: Application) {
-            this.instance = instance
-        }
+    /**
+     * 初始化注入application对象
+     */
+    fun inject(instance: Application) {
+        this.instance = instance
     }
 
+    /**
+     * Application生命周期
+     * [Application.attachBaseContext]
+     */
+    fun attachBaseContext(base: Context) {
+        Log.i(TAG, "attachBaseContext")
+    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    /**
+     * Application生命周期
+     * [Application.onCreate]
+     */
     fun onCreate() {
         Log.i(TAG, "onCreate")
         AppDatabaseManager.init(instance)

@@ -19,11 +19,14 @@ import com.imuges.order.activity.views.IMainView
 import com.imuges.order.adapter.MainAdapter
 import com.imuges.order.base.BaseFullTitleActivity
 import com.imuges.order.presenter.MainPresenter
+import com.nullpt.base.app.MainApplication
 import com.nullpt.base.framework.BasePresenter
 import com.nullpt.base.framework.ContentView
 import com.nullpt.base.framework.IBaseView
 import com.nullpt.statisticscompose.activity.ComposeStatisticsMainActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * @author BGQ
@@ -100,6 +103,28 @@ class MainActivity : BaseFullTitleActivity(), IMainView, View.OnClickListener,
     }
 
     override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+        //热修复代码测试
+        if (position == 0) {
+            val app = MainApplication.instance
+            val fileIs = assets.open("classes.dex")
+            val outDir = File("${cacheDir.absolutePath}/hotfit")
+            if (!outDir.exists()) {
+                outDir.mkdir()
+            }
+            val outFile = File(outDir, "hotfit.dex")
+            val outOs = FileOutputStream(outFile)
+            var len: Int
+            val bytes = ByteArray(1024)
+            len = fileIs.read(bytes)
+            while (len != -1) {
+                outOs.write(bytes, 0, len)
+                len = fileIs.read(bytes)
+            }
+            fileIs.close()
+            outOs.close()
+            toast("添加热修复插入，下次启动采用热修复代码")
+            return
+        }
         when (view.id) {
             R.id.clickView -> {
                 OrderDetailActivity.startActivity(
